@@ -1,0 +1,160 @@
+<style>
+  .flex-swatch {
+    display: flex;
+    gap: 30px;
+  }
+
+  @media only screen and (max-width: 1024px) {
+    .flex-swatch {
+      gap: 40px;
+    }
+  }
+
+  .swatch {
+    display: block;
+  }
+
+  input[type="radio"] {
+    opacity: 0;
+    position: absolute;
+  }
+
+  label {
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  .swatch {
+    width: 36px;
+    height: 36px;
+    display: block;
+    background-size: cover;
+    border: 2px solid transparent;
+    background-repeat: no-repeat;
+    margin-left: -10px;
+  }
+
+  .variant-custom-label {
+    text-align: center !important;
+    font-family: 'Avenir Black', sans-serif;
+  }
+
+  input[type="radio"]:checked+label>.swatch {
+    border: 2px solid #000;
+  }
+
+  .custom-rcl-swatch {
+    display: grid;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  .swatch-label {
+    display: flex;
+    justify-content: center;
+  }
+</style>
+
+{% assign product_id = product.id %}
+{% assign variant_ids = product.variants %}
+{% assign product_tags = product.tags %}
+
+ {% if product_tags contains 'Bundles' %}
+   
+   <div data-combined="true" data-display="variant" data-product-id="{{ product_id }}"
+  style="--g-xs:15px;--g-sm:25px;--g-md:20px;--g-lg:25px" data-sw-id="sw{{ product_id }}"
+  class="sc-gmQyQr eQzcrI prod-swatches" data-pf-type="ProductVariantSwatches" id="color-selector">
+  <input type="hidden" name="id" id="selected-variant" value="">
+  <div class="pf-c">
+    <div class="pf-option-swatches flex-swatch">
+      {% for variant in variant_ids %}
+        {% assign title = variant.title | split: " / "%}
+        {% if title[0] == title[1] %}
+          <div class="pf-vs-square pf-vs-image custom-rcl-swatch" data-option-name="PFCombined">
+              <input type="radio" id="sw{{ product_id }}-{{ variant.id }}-{{ forloop.index }}" name="sw{{ product_id }}" value="{{ variant.id }}">
+              <label for="sw{{ product_id }}-{{ variant.id }}-{{ forloop.index }}" title="{{ title[0] }}" class="swatch-label">
+                {% if title[0] contains 'Cadmium Orange' %}
+                  <span class="swatch" style="background-image: url('//cdn.shopify.com/s/files/1/0609/3235/8403/files/Ellipse_8.svg?v=1692846474');"></span>
+                {% elsif title[0] contains 'Ivory White' %}
+                  <span class="swatch" style="background-image: url('//cdn.shopify.com/s/files/1/0609/3235/8403/files/Ellipse_9.svg?v=1692846474');"></span>
+                {% elsif title[0] contains 'Space Black' %}
+                  <span class="swatch" style="background-image: url('//cdn.shopify.com/s/files/1/0609/3235/8403/files/Ellipse_10.svg?v=1692846475');"></span>
+                {% elsif title[0] contains 'Mint Green' %}
+                  <span class="swatch" style="background-image: url('https://cdn.shopify.com/s/files/1/0844/4352/9524/files/Ellipse_3.svg?v=1698814324');"></span>
+                {% else %}
+                  <span class="swatch" style="background-image: url('//cdn.shopify.com/s/files/1/0609/3235/8403/files/default_image.svg?v=1692846475');"></span>
+                {% endif %}
+              </label>
+              <span class="variant-custom-label">
+                {{ title[0] }}
+              </span>
+            </div>
+          {% endif %}
+        {% comment %}
+        {% for option in variant.options %}
+          {% unless option_contains contains option %}
+            {% assign option_contains = option_contains | append: option | append: ',' %}
+            <div class="pf-vs-square pf-vs-image custom-rcl-swatch" data-option-name="PFCombined">
+              <input type="radio" id="sw{{ product_id }}-{{ variant.id }}-{{ forloop.index }}" name="sw{{ product_id }}" value="{{ variant.id }}">
+              <label for="sw{{ product_id }}-{{ variant.id }}-{{ forloop.index }}" title="{{ option }}" class="swatch-label">
+                {% if option contains 'Cadmium Orange' %}
+                  <span class="swatch" style="background-image: url('//cdn.shopify.com/s/files/1/0609/3235/8403/files/Ellipse_8.svg?v=1692846474');"></span>
+                {% elsif option contains 'Ivory White' %}
+                  <span class="swatch" style="background-image: url('//cdn.shopify.com/s/files/1/0609/3235/8403/files/Ellipse_9.svg?v=1692846474');"></span>
+                {% elsif option contains 'Space Black' %}
+                  <span class="swatch" style="background-image: url('//cdn.shopify.com/s/files/1/0609/3235/8403/files/Ellipse_10.svg?v=1692846475');"></span>
+                {% elsif option contains 'Mint Green' %}
+                  <span class="swatch" style="background-image: url('https://cdn.shopify.com/s/files/1/0844/4352/9524/files/Ellipse_3.svg?v=1698814324');"></span>
+                {% else %}
+                  <span class="swatch" style="background-image: url('//cdn.shopify.com/s/files/1/0609/3235/8403/files/default_image.svg?v=1692846475');"></span>
+                {% endif %}
+              </label>
+              <span class="variant-custom-label">
+                {{ option }}
+              </span>
+            </div>
+          {% endunless %}
+        {% endfor %}
+        {% endcomment %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% else %}
+<div data-combined="true" data-display="variant" data-product-id="{{ product_id }}"
+  style="--g-xs:15px;--g-sm:25px;--g-md:20px;--g-lg:25px" data-sw-id="sw{{ product_id }}"
+  class="sc-gmQyQr eQzcrI prod-swatches" data-pf-type="ProductVariantSwatches" id="color-selector">
+  <input type="hidden" name="id" id="selected-variant" value="">
+  <div class="pf-c">
+    <div class="pf-option-swatches flex-swatch">
+      {% for variant in variant_ids %}
+      <div class="pf-vs-square pf-vs-image custom-rcl-swatch" data-option-name="PFCombined">
+        <input type="radio" id="sw{{ product_id }}-{{ variant.id }}" name="sw{{ product_id }}" value="{{ variant.id }}">
+        <label for="sw{{ product_id }}-{{ variant.id }}" title="{{ variant.title }}" class="swatch-label">
+          {% assign variant_name = variant.title %}
+          {% if variant_name contains 'Cadmium Orange' %}
+            <span class="swatch" style="background-image: url('//cdn.shopify.com/s/files/1/0609/3235/8403/files/Ellipse_8.svg?v=1692846474');"></span>
+          {% elsif variant_name contains 'Ivory White' %}
+            <span class="swatch" style="background-image: url('//cdn.shopify.com/s/files/1/0609/3235/8403/files/Ellipse_9.svg?v=1692846474');"></span>
+          {% elsif variant_name contains 'Space Black' %}
+            <span class="swatch" style="background-image: url('//cdn.shopify.com/s/files/1/0609/3235/8403/files/Ellipse_10.svg?v=1692846475');"></span>
+          {% elsif variant_name contains 'Mint Green' %}
+            <span class="swatch" style="background-image: url('https://cdn.shopify.com/s/files/1/0844/4352/9524/files/Ellipse_3.svg?v=1698814324');"></span>
+          {% else %}
+            <span class="swatch" style="background-image: url('//cdn.shopify.com/s/files/1/0609/3235/8403/files/default_image.svg?v=1692846475');"></span>
+          {% endif %}
+                </label>
+        <span class="variant-custom-label">
+                    {% assign variant_name_parts = variant.title | split: ' / ' %}
+                    {{ variant_name_parts[0] }}
+                </span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+  {% endif %}    
+
+         

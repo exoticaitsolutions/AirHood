@@ -1,0 +1,462 @@
+<style>
+.best-sellers-section {
+    text-align: center;
+    padding: 50px 20px;
+    background-color: {{ section.settings.background_color_desktop }};
+    overflow: hidden;
+}
+
+.best-sellers-title {
+    color: #141319;
+    text-align: center;
+    font-family: 'Avenir Black',sans-serif;
+    font-size: 45px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: normal;
+    margin-bottom: 20px;
+    text-transform: none;
+}
+
+.best-sellers-container {
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.best-seller-product {
+    width: 580px;
+    margin: 20px 15px;
+    padding: 10px 30px 30px;
+    text-align: left;
+    border-radius: 20px;
+    background: #FFF;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25)
+}
+
+.product-image-wrapper {
+    width: 100%;
+    height: auto;
+    text-align: right;
+}
+
+.product-image {
+    width: 80%;
+    height: auto;
+}
+
+.product-details {
+    margin-top: 10px;
+}
+
+.product-price {
+    color: #FF776E;
+    font-family: 'Nunito',sans-serif;
+    font-size: 26px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  margin-right: 10px;
+}
+
+p.product-paragraph {
+    white-space: pre-line;
+    width: 100%;
+}
+
+.product-swatch {
+    margin: 20px 0;
+}
+
+.swatch {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 1rem;
+    cursor: pointer;
+}
+
+.swatch:hover {
+    opacity: 0.8;
+}
+
+.shop-now-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #DA291C;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 90px;
+    min-width: 158px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.slider-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.bs-prev-slide, .bs-next-slide {
+    cursor: pointer;
+    margin: 0 10px;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+}
+
+h3.product-title {
+    color: #141319;
+    font-family: 'Avenir Medium',sans-serif;
+    font-size: 2rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: none;
+}
+
+.product-bottom-details {
+    display: flex;
+    width: 100%;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+@media (max-width: 1460px) and (min-width: 769px) {
+    h3.product-title {
+        font-size: 1.5rem;
+    }
+
+    .product-bottom-details {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+@media (min-width: 769px) {
+    .mobile-only {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .best-sellers-section {
+        background: radial-gradient(51.75% 57.46% at 75.36% 48.44%, #5C5C63 0%, #141319 100%);
+    }
+
+    .best-sellers-title {
+        color: #fff;
+        font-size: 40px;
+    }
+
+    .best-seller-product-slide {
+        background: #fff;
+        border-radius: 20px;
+        padding: 20px 20px 30px;
+        flex: 0 0 100%;
+        max-width: 100%; 
+        box-sizing: border-box;
+        transition: transform 0.5s ease-out;
+    }
+
+    .product-image {
+        width: 100%;
+        height: auto;
+    }
+
+    .product-bottom-details {
+        display: block;
+    }
+
+    .desktop-only {
+        display: none;
+    }
+
+    .mobile-only {
+        display: flex;
+        gap: 7px;
+    }
+
+    .mobile-slider-controls.mobile-only {
+        text-align: right;
+        margin-top: 30px;
+        display: block;
+    }
+
+    .mobile-slider-controls.mobile-only button.bs-prev-slide,
+    .mobile-slider-controls.mobile-only button.bs-next-slide {
+        background: #D9D9D9;
+        padding: 5px 15px;
+        font-size: x-large;
+        border-radius: 100%;
+        margin: 0;
+        color:black;
+    }
+}
+.best-sellers-section .__pf_OcGXRYRm .pf-343_ {
+    color: #191919;
+    text-decoration: line-through;
+    font-size: 26px;
+    font-weight: 400;
+    font-family: 'Nunito', sans-serif;
+ 
+}
+ .best-sellers-section .sc-eQxpLG.kmqMaZ.__pf.__pf_OcGXRYRm {
+    display: flex;
+    align-items: center;
+
+}
+</style>
+<div class="best-sellers-section">
+    <h2 class="best-sellers-title">{{ section.settings.title }}</h2>
+    
+    <div class="best-sellers-container desktop-only">
+        {% for block in section.blocks %}
+        {% assign product = all_products[block.settings.product_handle] %}
+        {% assign shortened_title = product.title | remove: '®' | split: '|' | first %}
+        <div class="best-seller-product">
+            <div class="product-details">
+                <h3 class="product-title">{{ shortened_title }}</h3>
+                <div class="product-swatch">
+                    {% render 'product-slider-swatch', product: product %}
+                </div>
+  <div class="sc-eQxpLG kmqMaZ __pf __pf_OcGXRYRm" id="__pf">
+                <div class="product-price">{{ product.price | money }}
+                
+                </div>
+            
+              <div data-product-type="compare_at_price" class="sc-fkJVfC gmaILq pf-343_">{{ product.compare_at_price | money }}</div>
+            </div></div>
+            {% assign selected_variant_image = '' %}
+            {% assign selected_option = block.settings.initial_variant_image %}
+
+            {% for variant in product.variants %}
+            {% if variant.options contains selected_option %}
+                {% assign selected_variant_image = variant.featured_image | img_url: 'master' %}
+                {% break %}
+            {% endif %}
+            {% endfor %}
+
+            <div class="product-image-wrapper">
+                <img src="{% if selected_variant_image != '' %}{{ selected_variant_image }}{% else %}{{ product.featured_image | img_url: 'master' }}{% endif %}" alt="{{ product.title }}" class="product-image">
+            </div>
+            <div class="product-bottom-details">
+                <p class="product-paragraph">{{ block.settings.product_paragraph }}</p>
+                <a href="{{ product.url }}" class="shop-now-button" role="button">Shop Now</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+  
+    <div class="best-sellers-slider mobile-only" id="bestSellersSlider">
+        {% for block in section.blocks %}
+            {% assign product = all_products[block.settings.product_handle] %}
+            {% assign shortened_title = product.title | remove: '®' | split: '|' | first %}
+            <div class="best-seller-product-slide">
+                <div class="product-details">
+                    <h3 class="product-title">{{ shortened_title }}</h3>
+                    <div class="product-swatch">
+                        {% render 'product-slider-swatch', product: product %}
+                    </div>
+                    <div class="product-price">{{ product.price | money }}</div>
+                </div>
+                {% assign selected_variant_image = '' %}
+                {% assign selected_option = block.settings.initial_variant_image %}
+    
+                {% for variant in product.variants %}
+                {% if variant.options contains selected_option %}
+                    {% assign selected_variant_image = variant.featured_image | img_url: 'master' %}
+                    {% break %}
+                {% endif %}
+                {% endfor %}
+    
+                <div class="product-image-wrapper">
+                    <img src="{% if selected_variant_image != '' %}{{ selected_variant_image }}{% else %}{{ product.featured_image | img_url: 'master' }}{% endif %}" alt="{{ product.title }}" class="product-image">
+                </div>
+                <div class="product-bottom-details">
+                    <p class="product-paragraph">{{ block.settings.product_paragraph }}</p>
+                    <a href="{{ product.url }}" class="shop-now-button" role="button">Shop Now</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="mobile-slider-controls mobile-only">
+        <button class="bs-prev-slide">&#10094;</button>
+        <button class="bs-next-slide">&#10095;</button>
+    </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const slider = document.getElementById('bestSellersSlider');
+  const slides = slider.querySelectorAll('.best-seller-product-slide');
+  let currentIndex = 0;
+  let slidesPerPage = calculateSlidesPerPage();
+  let startPos = 0;
+  let currentTranslate = 0;
+  let prevTranslate = 0;
+  let isDragging = false;
+
+  showSlides();
+
+  function calculateSlidesPerPage() {
+    return window.innerWidth >= 768 ? 0 : 1;
+  }
+
+  function setSliderPosition() {
+    slides.forEach((slide) => {
+      slide.style.transform = `translateX(${currentTranslate}px)`;
+      slide.style.display = 'block';
+      slide.style.transition = isDragging ? 'none' : 'transform 0.5s ease-out';
+    });
+  }
+
+  function touchStart(index) {
+    return function(event) {
+      startPos = getPositionX(event);
+      isDragging = true;
+      currentIndex = index;
+      slider.classList.add('grabbing');
+    }
+  }
+
+  function touchMove(event) {
+    if (isDragging) {
+      const currentPosition = getPositionX(event);
+      currentTranslate = prevTranslate + currentPosition - startPos;
+      setSliderPosition();
+    }
+  }
+
+  function touchEnd() {
+    isDragging = false;
+    const movedBy = currentTranslate - prevTranslate;
+    if (movedBy < -100 && currentIndex < slides.length - slidesPerPage) {
+      currentIndex += slidesPerPage;
+    }
+    if (movedBy > 100 && currentIndex > 0) {
+      currentIndex -= slidesPerPage;
+    }
+    setPositionByIndex();
+    slider.classList.remove('grabbing');
+  }
+
+  function getPositionX(event) {
+    return event.type.includes('mouse') ? event.pageX : event.touches[0].clientX;
+  }
+
+  function setPositionByIndex() {
+    currentTranslate = currentIndex * -slider.offsetWidth;
+    prevTranslate = currentTranslate;
+    setSliderPosition();
+  }
+
+  slides.forEach((slide, index) => {
+    const slideImage = slide.querySelector('img'); 
+    slideImage.addEventListener('dragstart', (e) => e.preventDefault());
+
+    slide.addEventListener('touchstart', touchStart(index));
+    slide.addEventListener('touchend', touchEnd);
+    slide.addEventListener('touchmove', touchMove);
+
+    slide.addEventListener('mousedown', touchStart(index));
+    slide.addEventListener('mouseup', touchEnd);
+    slide.addEventListener('mouseleave', touchEnd);
+    slide.addEventListener('mousemove', touchMove);
+  });
+
+  slider.classList.add('grab');
+
+  function showSlides() {
+    slidesPerPage = calculateSlidesPerPage();
+    setPositionByIndex();
+  }
+
+  document.querySelector('.bs-prev-slide').addEventListener('click', () => {
+    if (currentIndex > 0) {
+      currentIndex -= slidesPerPage;
+      setPositionByIndex();
+    }
+  });
+
+  document.querySelector('.bs-next-slide').addEventListener('click', () => {
+    if (currentIndex < slides.length - slidesPerPage) {
+      currentIndex += slidesPerPage;
+      setPositionByIndex();
+    }
+  });
+
+  window.addEventListener('resize', showSlides);
+});
+</script>
+{% schema %}
+{
+    "name": "Best Sellers",
+    "settings": [
+    {
+        "type": "text",
+        "id": "title",
+        "label": "Section Title",
+        "default": "Best Sellers"
+    },
+    {
+        "type": "color",
+        "id": "background_color_desktop",
+        "label": "Desktop Background Color",
+        "default": "#ECECEC"
+    }
+    ],
+    "blocks": [
+    {
+        "type": "product",
+        "name": "Product Block",
+        "settings": [
+        {
+            "type": "product",
+            "id": "product_handle",
+            "label": "Product"
+        },
+        {
+            "type": "select",
+            "id": "initial_variant_image",
+            "label": "Initial Variant Image",
+            "options": [
+            {
+                "value": "Cadmium Orange",
+                "label": "Cadmium Orange"
+            },
+            {
+                "value": "Ivory White",
+                "label": "Ivory White"
+            },
+            {
+                "value": "Space Black",
+                "label": "Space Black"
+            },
+            {
+                "value": "Mint Green",
+                "label": "Mint Green"
+            }
+            ],
+            "default": "Cadmium Orange"
+        },
+        {
+            "type": "textarea",
+            "id": "product_paragraph",
+            "label": "Product Details",
+            "default": "Your Paragraph Here"
+        }
+        ]
+    }
+    ],
+    "max_blocks": 3,
+    "presets": [
+    {
+        "name": "Best Sellers Section"
+    }
+    ]
+}
+{% endschema %}

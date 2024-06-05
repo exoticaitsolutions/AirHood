@@ -1,0 +1,551 @@
+
+<script
+  type="application/json"
+  data-section-type="blog-template"
+  data-section-id="{{ section.id }}"
+>
+</script>
+
+{%- assign image = section.settings.image -%}
+{%- assign mobile_image = section.settings.mobile_image -%}
+{%- assign background_style = section.settings.caption_content_background -%}
+{%- assign mobile_crop = 'mobile-banner--crop-' | append: section.settings.mobile_image_crop -%}
+{%- assign wide_display = section.settings.wide_display -%}
+{% if current_tags %}
+{%- assign banner_title = current_tags -%}
+{% else %}
+{%- assign banner_title = blog.title -%}
+{% endif %}
+{%- assign banner_subheading = section.settings.subtitle -%}
+
+{% if image != blank %}
+  {%
+    render 'template-banner',
+    image: image,
+    mobile_image: mobile_image,
+    background_style: background_style,
+    mobile_crop: mobile_crop,
+    wide_display: wide_display,
+    banner_title: banner_title,
+    banner_subheading: banner_subheading,
+    show_caption: true
+  %}
+{% endif %}
+
+{% if image == blank %}<a name="pagecontent" id="pagecontent"></a>{% endif %}
+<section class="section">
+  <div class="container content inner__section">
+    {% if image == blank %}
+      <div class="one-half column top__content_blog">
+        {% if current_tags %}
+          <h1 class="blog-title blog-tags--true">
+            <a href="/blogs/{{ blog.handle }}/tagged/{{ current_tags | handleize }}" title="{{ blog.title | escape }}">{{ current_tags }}</a>
+          </h1>
+        {% else %}
+          <h1 class="blog-title">{{ blog.title }}</h1>
+          <h1 class="blog-title">Blog</h1>
+          {% if section.settings.subtitle %}
+            <p class="subtitle blog__subheading">{{ section.settings.subtitle }}</p>
+          {% endif %}
+            <div class="top__links{% if page.handle == "blogs" %} all__blogs{% endif %}">
+            <a href="{{ section.settings.top1 }}">{{ section.settings.top1_text }}</a>
+            <a href="{{ section.settings.top2 }}">{{ section.settings.top2_text }}</a>
+            <a href="{{ section.settings.top3 }}">{{ section.settings.top3_text }}</a>
+            </div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+      {% if section.settings.blog_tags %}
+    <div class="{% if image == blank %}one-half{% else %}one-whole{% endif %} column section_select medium-down--one-whole">
+          <select name="tag_filter" id="blog_filter" class="blog_filter">
+            <option {% unless current_tags %}selected="selected"{% endunless %} value="{{ blog.url }}">{{ 'blogs.general.view_all' | t }}</option>
+            {% for tag in blog.all_tags %}
+              <option {% if current_tags contains tag %}selected="selected"{% endif %} value="/blogs/{{ blog.handle }}/tagged/{{ tag | handleize }}">{{ tag }}</option>
+            {% endfor %}
+          </select>
+    </div>
+      {% endif %}
+
+    {% unless image != blank %}
+      <div class="one-whole column border__div">
+        <div class="feature_divider"></div>
+      </div>
+    {% endunless %}
+
+    {% comment %} Check to see if sidebar should be enabled {% endcomment %}
+    {% if section.blocks.size > 0 %}
+      {%- assign sidebar = true -%}
+    {% else %}
+      {%- assign sidebar = false -%}
+    {% endif %}
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "itemListElement": [
+          {% for article in blog.articles %}
+            {
+              "@type": "ListItem",
+              "position": "{{ forloop.index | json }}",
+              "url": "{{ shop.url }}{{ article.url }}",
+              "name": "{{ article.title }}"
+            } {%- unless forloop.last -%},{%- endunless -%}
+          {% endfor %}
+        ]
+      }
+    </script>
+
+    <div class="blog-template-wrapper is-flex is-flex-wrap">
+      <div class="has-sidebar-option sidebar-enabled--{{ sidebar }}">
+        <div class="container bolg__conatiner__">
+   {% assign blog_handles = "articles,company-news,kitchen" | split: "," %}
+
+   {% for handle in blog_handles %}
+                    {% for article in blogs[handle].articles %}
+            {% if section.settings.blog_posts_per_row == 1 %}
+              {% if article.image %}
+                <div class="one-half column article_image medium-down--one-whole">
+                  <a href="{{ article.url }}" title="{{ article.title | escape }}">
+                    {%
+                      render 'image-element',
+                      image: article.image,
+                      alt: image.alt
+                    %}
+                  </a>
+                </div>
+                <div class="one-half column article medium-down--one-half">
+              {% else %}
+                <div class="one-whole column medium-down--one-whole article">
+              {% endif %}
+            {% else %}
+              <div class="{% render 'column-width', value: section.settings.blog_posts_per_row %} column medium-down--one-whole article">
+                {% if article.image != blank %}
+                  <a href="{{ article.url }}" title="{{ article.title | escape }}">
+                    {%
+                      render 'image-element',
+                      image: article.image,
+                      alt: image.alt
+                    %}
+                  </a>
+                {% endif %}
+            {% endif %}
+
+              <h2 class="article__title">
+                      <a href="{{ article.url }}">{{ article.title }}
+                      </a>
+                      </h2>
+<div class="article__description">{{ article.content }}</div>
+              <p class="blog_meta">
+                {% if section.settings.blog_author %}
+                  <span>{{ 'blogs.article.by_author' | t: author: article.author }}</span>
+                {% endif %}
+
+                {% if section.settings.blog_date %}
+                  <span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 38 38" fill="none">
+<path d="M18.4734 21.8774C18.3579 21.8774 18.2356 21.8366 18.1404 21.7551L16.5982 20.437C16.3875 20.2535 16.3604 19.9342 16.5438 19.7168C16.7272 19.4994 17.0466 19.479 17.264 19.6624L18.453 20.6816L20.8038 18.4191C21.0076 18.2221 21.3269 18.2289 21.524 18.4327C21.721 18.6365 21.7142 18.9558 21.5104 19.1529L18.8267 21.7415C18.7247 21.8366 18.6025 21.8842 18.4734 21.8842V21.8774Z" fill="#28282D"/>
+<path d="M19.0441 25.0638C16.2924 25.0638 14.0571 22.8285 14.0571 20.0769C14.0571 17.3252 16.2924 15.0899 19.0441 15.0899C21.7957 15.0899 24.031 17.3252 24.031 20.0769C24.031 22.8285 21.7957 25.0638 19.0441 25.0638ZM19.0441 16.1023C16.8563 16.1023 15.0763 17.8824 15.0763 20.0701C15.0763 22.2578 16.8563 24.0379 19.0441 24.0379C21.2318 24.0379 23.0119 22.2578 23.0119 20.0701C23.0119 17.8824 21.2318 16.1023 19.0441 16.1023Z" fill="#28282D"/>
+<path d="M26.7421 28.8414H11.2717C9.8653 28.8414 8.72388 27.7 8.72388 26.2936V11.1561C8.72388 9.74967 9.8653 8.60825 11.2717 8.60825H26.7421C28.1485 8.60825 29.2899 9.74967 29.2899 11.1561V26.2936C29.2899 27.7 28.1485 28.8414 26.7421 28.8414ZM11.2717 9.62738C10.4292 9.62738 9.74301 10.3136 9.74301 11.1561V26.2936C9.74301 27.136 10.4292 27.8223 11.2717 27.8223H26.7421C27.5846 27.8223 28.2708 27.136 28.2708 26.2936V11.1561C28.2708 10.3136 27.5846 9.62738 26.7421 9.62738H11.2717Z" fill="#28282D"/>
+<path d="M28.7804 13.6292H9.23344C8.95488 13.6292 8.72388 13.3982 8.72388 13.1196C8.72388 12.841 8.95488 12.61 9.23344 12.61H28.7804C29.0589 12.61 29.2899 12.841 29.2899 13.1196C29.2899 13.3982 29.0589 13.6292 28.7804 13.6292Z" fill="#28282D"/>
+<path d="M12.1753 11.0338C11.8968 11.0338 11.6658 10.8028 11.6658 10.5242V7.60271C11.6658 7.32414 11.8968 7.09314 12.1753 7.09314C12.4539 7.09314 12.6849 7.32414 12.6849 7.60271V10.5242C12.6849 10.8028 12.4539 11.0338 12.1753 11.0338Z" fill="#28282D"/>
+<path d="M14.7164 11.0338C14.4378 11.0338 14.2068 10.8028 14.2068 10.5242V7.60271C14.2068 7.32414 14.4378 7.09314 14.7164 7.09314C14.9949 7.09314 15.2259 7.32414 15.2259 7.60271V10.5242C15.2259 10.8028 14.9949 11.0338 14.7164 11.0338Z" fill="#28282D"/>
+<path d="M25.8316 11.0338C25.553 11.0338 25.322 10.8028 25.322 10.5242V7.60271C25.322 7.32414 25.553 7.09314 25.8316 7.09314C26.1101 7.09314 26.3412 7.32414 26.3412 7.60271V10.5242C26.3412 10.8028 26.1101 11.0338 25.8316 11.0338Z" fill="#28282D"/>
+<path d="M23.2906 11.0338C23.012 11.0338 22.781 10.8028 22.781 10.5242V7.60271C22.781 7.32414 23.012 7.09314 23.2906 7.09314C23.5691 7.09314 23.8001 7.32414 23.8001 7.60271V10.5242C23.8001 10.8028 23.5691 11.0338 23.2906 11.0338Z" fill="#28282D"/>
+</svg>
+                  {{ article.published_at | date: format: "month_day_year" }}</span>
+                {% endif %}
+
+                {% if section.settings.read_time %}
+                  {%
+                    render 'include-read-time',
+                    article: article
+                  %}
+                {% endif %}
+
+                {% if section.settings.blog_comment_count %}
+                  {% if settings.disqus_enabled %}
+                    <span>
+                      <a href="{{ article.url }}#disqus_thread" data-disqus-identifier="{{ article.id }}" class="disqus-comment-count">{{ 'blogs.counts.comments_with_count' | t: count: 0 }}</a>
+                    </span>
+                  {% elsif article.comments_enabled? and article.comments_count > 0 %}
+                    <span>
+                      <a href="{{ article.url }}#comments">{{ 'blogs.counts.comments_with_count' | t: count: article.comments_count }}</a>
+                    </span>
+                  {% endif %}
+                {% endif %}
+              </p>
+
+              {% if section.settings.blog_tags %}
+                <div class="blog_meta tags">
+                  {% for tag in article.tags %}
+                    <span><a href="{{ shop.url }}/blogs/{{ blog.handle }}/tagged/{{ tag | handleize }}" title="{{ blog.title }} {{ 'blogs.general.tagged' | t }} {{ tag | escape }}">{{ tag }}</a></span>
+                  {% endfor %}
+                </div>
+              {% endif %}
+
+              {% if section.settings.excerpt_display == 'full_excerpt' %}
+                {%- assign excerpt = article.excerpt -%}
+              {% elsif section.settings.excerpt_display == 'truncated_excerpt' %}
+                {%- assign excerpt = article.excerpt | truncate: 100 -%}
+              {% endif %}
+
+              {% if article.excerpt != blank %}
+                <div class="excerpt">
+                  {{ excerpt }}
+                </div>
+              {% endif %}
+
+              {% if section.settings.read_more_link %}
+                <a
+                  href="{{ article.url }}"
+                  title="{{ article.title | escape }}"
+                  class="
+                    {% if settings.read_more_style == 'button' %}
+                      blog__read-more-button global-button global-button--text
+                    {% else %}
+                      read-more-link
+                    {% endif %}
+                  "
+                >
+                  {{ 'blogs.general.continue_reading_html' | t }}
+                </a>
+              {% endif %}
+            </div>
+          {% endfor %}
+     {% endfor %}
+        </div>
+      </div>
+
+      {%
+        render 'blog-sidebar',
+        blog_handle: blog.handle
+      %}
+    </div>
+
+    <div class="one-whole column">
+      {%
+        render 'pagination',
+        paginate: paginate
+      %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Blog",
+  "class": "shopify-section--blog-template",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Banner"
+    },
+    {
+      "type": "checkbox",
+      "id": "wide_display",
+      "label": "Wide display",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Banner image",
+      "info": "1800 x 800px recommended"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile banner image",
+      "info": "Display a different image on mobile screens. This only appears when the desktop image is set."
+    },
+    {
+      "type": "select",
+      "id": "mobile_image_crop",
+      "label": "Mobile image cropping",
+      "default": "none",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subheading",
+      "default": "Subheading"
+    },
+    {
+      "type": "select",
+      "id": "caption_content_background",
+      "label": "Text contrast technique",
+      "default": "original",
+      "info": "Improve legibility by applying a contrast technique to your banner’s text.",
+      "options": [
+        {
+          "value": "original",
+          "label": "None"
+        },
+        {
+          "value": "darken_bg",
+          "label": "Darken banner image"
+        },
+        {
+          "value": "text_box",
+          "label": "Solid box"
+        },
+        {
+          "value": "translucent_text_box",
+          "label": "Translucent box"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "blog_posts_per_row",
+      "label": "Blog posts per row",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "blog_posts_per_page",
+      "label": "Blog posts per page",
+      "min": 1,
+      "max": 50,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "checkbox",
+      "id": "blog_tags",
+      "label": "Show blog post tags"
+    },
+    {
+      "type": "checkbox",
+      "id": "blog_author",
+      "label": "Show author"
+    },
+    {
+      "type": "checkbox",
+      "id": "read_time",
+      "label": "Show estimated read time",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "blog_date",
+      "label": "Show date",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "blog_comment_count",
+      "label": "Show comment count",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "read_more_link",
+      "label": "Show continue reading link for blog post excerpts",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "excerpt_display",
+      "label": "Excerpt display",
+      "default": "full_excerpt",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "full_excerpt",
+          "label": "Full excerpt"
+        },
+        {
+          "value": "truncated_excerpt",
+          "label": "Truncated excerpt"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Sidebar"
+    },
+    {
+      "type": "paragraph",
+      "content": "Create a sidebar by adding content blocks."
+    },
+    {
+      "type": "checkbox",
+      "id": "toggle",
+      "label": "Collapse sidebar content",
+      "default": false
+    },
+     {
+      "type": "header",
+      "content": "Buttons info"
+    },
+    {
+      "type": "text",
+      "id": "top1_text",
+      "label": "Button 1 text",
+      "default": "ALL POSTS"
+    },
+    {
+      "type": "url",
+      "id": "top1",
+      "label": "Button 1 link"
+    },
+    {
+      "type": "text",
+      "id": "top2_text",
+      "label": "Button 2 text",
+      "default": "KITCHEN AIR"
+    },
+    {
+      "type": "url",
+      "id": "top2",
+      "label": "Button 2 link"
+    },
+    {
+      "type": "text",
+      "id": "top3_text",
+      "label": "Button 3 text",
+      "default": "COMPANY NEWS"
+    },
+    {
+      "type": "url",
+      "id": "top3",
+      "label": "Button 3 link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "post_tags",
+      "name": "Blog post tags",
+      "limit": 1
+    },
+    {
+      "type": "menu",
+      "name": "Menu",
+      "settings": [
+        {
+          "type": "link_list",
+          "id": "custom_menu_linklist",
+          "label": "Menu"
+        }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Newsletter sign up form",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "newsletter_title",
+          "label": "Heading",
+          "default": "Subscribe"
+        },
+        {
+          "type": "richtext",
+          "id": "newsletter_text",
+          "label": "Subheading",
+          "default": "<p>Sign up to get the latest on sales, new releases and more …</p>"
+        }
+      ]
+    },
+    {
+      "type": "page",
+      "name": "Page",
+      "settings": [
+        {
+          "type": "page",
+          "id": "content_page",
+          "label": "Page"
+        }
+      ]
+    },
+    {
+      "type": "recent_posts",
+      "name": "Recent blog posts",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "blog_post_count",
+          "label": "Display blog posts",
+          "options": [
+            {
+              "value": "2",
+              "label": "2"
+            },
+            {
+              "value": "5",
+              "label": "5"
+            },
+            {
+              "value": "10",
+              "label": "10"
+            }
+          ],
+          "default": "10"
+        }
+      ]
+    },
+    {
+      "type": "search",
+      "name": "Search form",
+      "limit": 1
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Text area can be used for details about blog authors or general information.</p>"
+        }
+      ]
+    }
+  ],
+  "presets":[ 
+  { 
+  "name":"All blog posts"
+  }
+  ]
+}
+
+{% endschema %}

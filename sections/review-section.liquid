@@ -1,0 +1,339 @@
+<style>
+.reviews-section {
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    min-height: 688px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-bottom: 60px;
+}
+
+.desktop-reviews {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1800px;
+}
+
+h2.review-section-title {
+    color: #141319;
+    text-align: center;
+    font-family: 'Avenir Black',sans-serif;
+    font-size: 45px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: normal;
+    text-transform: none;
+    padding: 50px 0 25px;
+}
+
+.review-column {
+    width: calc(33.333% - 20px); 
+    margin: 10px;
+    border-radius: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    padding: 50px; 
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+h3.review-title {
+    color: #000;
+    text-align: center;
+    font-family: 'Avenir Heavy',sans-serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    letter-spacing: 1.2px;
+    text-transform: none;
+    width: 100%;
+    display: block;
+}
+
+p.review-paragraph {
+    color: #000;
+    font-family: 'Nunito',sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.9px;
+    text-align: center;
+    padding: 0 9%;
+    margin-top: 20px;
+}
+
+p.review-name {
+    color: #000;
+    font-family: 'Nunito',sans-serif;
+    font-size: 18px;
+    font-style: italic;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: 0.9px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.review-column .star-rating,
+.review-slide .star-rating {
+    color: #FDD545;
+    font-size: x-large;
+    text-align: center;
+}
+
+@media (max-width: 1280px) and (min-width: 1000px) {
+    /* .desktop-reviews {
+        flex-direction: column;
+        max-width: 720px;
+    } */
+
+    .review-column {
+        width: 100%;
+    }
+}
+
+@media (max-width: 1000px) {
+    .reviews-section {
+        background-image: url('{{ section.settings.background_review_mobile | img_url: '' }}');
+    }
+
+    .desktop-reviews {
+        display: none;
+    }
+
+    .mobile-reviews-slider {
+        display: flex;
+        overflow: hidden;
+        padding: 25px;
+        scroll-behavior: smooth;
+    }
+
+    .review-slide {
+        display: none;
+        min-height: 465px; 
+        box-sizing: border-box;
+        border-radius: 15px;
+        background: rgba(255, 255, 255, 0.85);
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+        flex-direction: column;
+        justify-content: center;
+        padding: 15px;
+    }
+
+    .review-slide.active {
+        display: flex; 
+    }
+
+    h2.review-section-title {
+        font-size: 40px;
+    }
+
+    p.review-paragraph {
+        font-size: 14px;
+    }
+
+    .mobile-slider-dots {
+        text-align: center;
+        position: relative;
+        margin-top: -15%;
+    }
+
+    .dot {
+        display: inline-block;
+        width: 13px;
+        height: 13px;
+        margin: 0 5px;
+        background-color: transparent;
+        border: 1px solid #141319;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+    .dot.active {
+        background-color: #141319;
+        border: 1px solid #141319;
+    }
+}
+
+@media (min-width: 1000px) {
+    .mobile-reviews-slider, 
+    .mobile-slider-dots {
+        display: none;
+    }
+
+    .reviews-section {
+        background-image: url('{{ section.settings.background_review | img_url: '' }}');
+    }
+}
+</style>
+<div class="reviews-section">
+    <h2 class="review-section-title">{{ section.settings.review_section_title }}</h2>
+    <div class="desktop-reviews">
+        {% for block in section.blocks %}
+        <div class="review-column">
+            <div class="star-rating">
+                {% assign max_stars = 5 %}
+                {% assign star_rating = block.settings.star_rating | plus: 0 %}
+                {% for i in (1..max_stars) %}
+                    {% if i <= star_rating %}
+                    <span class="star filled">★</span> 
+                    {% else %}
+                    <span class="star">☆</span>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <h3 class="review-title">{{ block.settings.review_title }}</h3>
+            <p class="review-paragraph">{{ block.settings.review_text }}</p>
+            <p class="review-name">{{ block.settings.review_name }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="mobile-reviews-slider">
+        {% for block in section.blocks %}
+        <div class="review-slide">
+            <div class="review-tst">
+                <div class="star-rating">
+                    {% assign max_stars = 5 %}
+                    {% assign star_rating = block.settings.star_rating | plus: 0 %}
+                    {% for i in (1..max_stars) %}
+                        {% if i <= star_rating %}
+                        <span class="star filled">★</span> 
+                        {% else %}
+                        <span class="star">☆</span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <h3 class="review-title">{{ block.settings.review_title }}</h3>
+            </div>
+            <p class="review-paragraph">{{ block.settings.review_text }}</p>
+            <p class="review-name">{{ block.settings.review_name }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="mobile-slider-dots">
+        {% for block in section.blocks %}
+        <button class="dot" data-slide="{{ forloop.index0 }}"></button>
+        {% endfor %}
+    </div>
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var slides = document.querySelectorAll('.review-slide');
+  var dots = document.querySelectorAll('.mobile-slider-dots .dot');
+
+  function changeSlide(newActiveIndex) {
+    slides.forEach(function(slide, index) {
+      slide.style.display = 'none'; 
+      dots[index].classList.remove('active'); 
+    });
+    slides[newActiveIndex].style.display = 'flex'; 
+    dots[newActiveIndex].classList.add('active'); 
+  }
+
+  changeSlide(0);
+
+  dots.forEach((dot, index) => {
+    dot.addEventListener('click', () => changeSlide(index));
+  });
+});
+</script>
+
+
+{%  schema  %}
+{
+  "name": "Review Section",
+  "settings": [
+    {
+        "type": "image_picker",
+        "id": "background_review",
+        "label": "Desktop Background"
+    },
+    {
+        "type": "image_picker",
+        "id": "background_review_mobile",
+        "label": "Mobile Background"
+    },
+    {
+        "type": "text",
+        "id": "review_section_title",
+        "label": "Review Section Title",
+        "default": "Hundreds of Verified Reviews"
+    }
+  ],
+  "max_blocks": 10,
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review Block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "review_title",
+          "label": "Review Title",
+          "default": "FABULOUS FIND!"
+        },
+        {
+          "type": "textarea",
+          "id": "review_text",
+          "label": "Review Text",
+          "default": "This is the default review text. It will appear in the review paragraph."
+        },
+        {
+          "type": "text",
+          "id": "review_name",
+          "label": "Reviewer's Name",
+          "default": "John Doe"
+        },
+        {
+          "type": "select",
+          "id": "star_rating",
+          "label": "Star Rating",
+          "options": [
+            {
+              "value": "1",
+              "label": "1 Star"
+            },
+            {
+              "value": "2",
+              "label": "2 Stars"
+            },
+            {
+              "value": "3",
+              "label": "3 Stars"
+            },
+            {
+              "value": "4",
+              "label": "4 Stars"
+            },
+            {
+              "value": "5",
+              "label": "5 Stars"
+            }
+          ],
+          "default": "5"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile Image",
+          "info": "Upload a separate image for the mobile layout if needed."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Review Section"
+    }
+  ]
+}
+{% endschema %}

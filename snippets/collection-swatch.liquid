@@ -1,0 +1,60 @@
+{%- assign color_map = 'Cadmium Orange:#f04222,Ivory White:#ececec,Space Black:#28282c,Mint Green:#B9DCD3' | split: ',' -%}
+{%- assign colors_shown = '' -%}
+
+{% if settings.collection_swatches %}
+  {% for option in product.options %}
+    {%- assign downcased_option = option | downcase -%}
+
+    {% if downcased_option contains 'color' or downcased_option contains 'colour' %}
+      {%- assign option_index = forloop.index0 -%}
+
+      <div class="collection_swatches">
+        {% for variant in product.variants %}
+          {%- assign value = variant.options[option_index] -%}
+
+          {%- assign color_code = '' -%}
+          {% for entry in color_map %}
+            {%- assign parts = entry | split: ':' -%}
+            {%- if parts[0] == value -%}
+              {%- assign color_code = parts[1] -%}
+            {%- endif -%}
+          {% endfor %}
+
+          {%- if color_code == '' -%}
+            {%- assign color_code = 'transparent' -%}
+          {%- endif -%}
+
+          {% unless colors_shown contains value %}
+            {%- assign colors_shown = colors_shown | append: value | append: ',' -%}
+
+            <div
+              class="swatch"
+              role="button"
+              tabindex="0"
+              data-variant-id="{{ variant.id }}"
+              data-variant-price="{{ variant.price | money_without_currency }}"
+              data-variant-compare-at-price="{{ variant.compare_at_price | money_without_currency }}"
+              data-swatch-name="meta-{{ downcased_option }}_{{ value | replace: ' ', '_' | downcase }}">
+              <span {% if section.settings.products_per_row == 2 %}data-image="{{ variant.featured_image | product_img_url: '600x' }}"{% elsif section.settings.products_per_row == 3 %}data-image="{{ variant.featured_image | product_img_url: '500x' }}"{% else %}data-image="{{ variant.featured_image | product_img_url: '400x' }}"{% endif %} style="background-color: {{ color_code }};"></span>
+            </div>
+          {% endunless %}
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endfor %}
+  <script>
+    $(document).ready(function() {
+      if (window.Shopify && window.Shopify.theme_settings && window.Shopify.theme_settings.collection_swatches) {
+        $('body').on('click', '.collection_swatches .swatch', function () {
+            var $thisSwatch = $(this).find('span');
+            if ($thisSwatch.data('image').indexOf('no-image') === -1) {
+                var newImageSrc = $thisSwatch.data('image');
+                var $parentThumbnail = $(this).closest('.thumbnail');
+                $parentThumbnail.find('.image__container img:not(.secondary)').attr('src', newImageSrc);
+                $parentThumbnail.find('.image__container img:not(.secondary)').attr('srcset', newImageSrc);
+            }
+        });
+      }
+    });
+  </script>
+{% endif %}

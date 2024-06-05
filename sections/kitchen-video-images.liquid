@@ -1,0 +1,317 @@
+<style>
+.video-image-slider-section {
+    max-width: 1800px;
+    margin: auto;
+    text-align: center;
+    padding: 5rem 2rem;
+}
+
+.section-title {
+    color: #141319;
+    text-align: center;
+    font-family: 'Avenir Black',sans-serif;
+    font-size: 45px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: normal;
+    margin-bottom: 20px;
+    text-transform: none;
+}
+
+.video-image-slider {
+    display: flex;
+    overflow-x: auto;
+}
+
+.video-image-slide {
+    flex: 0 0 100%;
+    max-width: 25%; 
+    box-sizing: border-box;
+    padding: 10px;
+    transition: transform 0.5s ease-out;
+}
+
+.video-block {
+    width: 100%;
+    max-height: 665px; 
+    object-fit: cover;
+}
+
+img.video-image-src {
+    width: 100%;
+    max-height: calc(100% - 155px);
+    object-fit: cover;
+}
+
+
+
+.slider-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    position: relative;
+}
+
+.prev-slide, .next-slide {
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+}
+
+button.video-prev-slide,
+button.video-next-slide {
+    position: absolute;
+    z-index: 1;
+    background: #D9D9D9;
+    padding: 10px 20px;
+    font-size: x-large;
+    border-radius: 100%;
+}
+
+button.video-prev-slide {
+    top: 30vh;
+    left: -20px;
+}
+
+button.video-next-slide {
+    top: 30vh;
+    right: -20px;
+}
+
+.video-thumbnail {
+    cursor: pointer;
+    display: block;
+    margin: auto;
+}
+
+.slider-dots {
+    text-align: center;
+}
+
+.dot {
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    margin: 0 5px;
+    background-color: transparent;
+    border: 1px solid #141319;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.dot.active {
+    background-color: #141319;
+    border: 1px solid #141319;
+}
+
+@media (max-width: 960px) {
+  .video-image-slide {
+    max-width: 50%;
+  }
+}
+
+@media (max-width: 767px) {
+  .video-image-slider-section {
+      padding: 3.5rem 0rem;
+  }
+
+  .section-title {
+      font-size: 40px;
+      padding: 0 20px;
+  }
+
+
+  button.video-prev-slide {
+    top: 20vh;
+    left: 2px;
+  }
+
+  button.video-next-slide {
+      top: 20vh;
+      right: 2px;
+  }
+
+}
+ .video-image-slider-section .slider-controls button {
+    color: black;
+}
+</style>
+
+<div class="kitchen-video video-image-slider-section">
+  <h2 class="section-title">{{ section.settings.section_title }}</h2>
+  {{ section.settings.description }}
+  <div class="slider-controls">
+    <button class="video-prev-slide">&#10094;</button>
+    <button class="video-next-slide">&#10095;</button>
+  </div>
+  <div class="video-image-slider" id="videoImageSlider" style="overflow: hidden;">
+    {% for block in section.blocks %}
+      <div class="video-image-slide" data-slide-index="{{ forloop.index0 }}">
+        {% if block.settings.video_url != blank %}
+          <img class="video-image-src video-thumbnail" 
+              src="{{ block.settings.image_thumbnail | img_url: 'original' }}" 
+              data-preview-video-url="{{ block.settings.preview_video_url }}" 
+              data-full-video-url="{{ block.settings.video_url }}">
+        {% else %}
+          <img class="video-image-src" src="{{ block.settings.image | img_url: 'original' }}" alt="{{ block.settings.review_name }}">
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+  <div class="slider-dots"></div>
+ <a href="#signup"> <button class="btn-kitchen" type="button">SIGN UP</button></a>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const slider = document.getElementById('videoImageSlider');
+  const slides = slider.querySelectorAll('.video-image-slide');
+  const dotsContainer = document.querySelector('.slider-dots');
+  let currentIndex = 0;
+  let slidesPerPage = calculateSlidesPerPage();
+
+  setupDots();
+  showSlides();
+
+  function calculateSlidesPerPage() {
+    return window.innerWidth >= 960 ? 4 : 2;
+  }
+
+  function showSlides() {
+    const totalWidth = slider.offsetWidth;
+    const targetTransform = -(currentIndex / slidesPerPage) * totalWidth;
+    slides.forEach((slide, index) => {
+      slide.style.transform = `translateX(${targetTransform}px)`;
+      slide.style.display = 'block';
+    });
+  }
+
+  function setupDots() {
+    dotsContainer.innerHTML = '';
+    const pageCount = Math.ceil(slides.length / slidesPerPage);
+    for (let i = 0; i < pageCount; i++) {
+      const dot = document.createElement('div');
+      dot.classList.add('dot');
+      dot.addEventListener('click', () => changeSlide(i * slidesPerPage));
+      dotsContainer.appendChild(dot);
+    }
+    updateNavigationDots();
+  }
+
+  function updateNavigationDots() {
+    const dots = document.querySelectorAll('.slider-dots .dot');
+    const activePage = Math.floor(currentIndex / slidesPerPage);
+    dots.forEach((dot, index) => {
+      dot.classList.toggle('active', index === activePage);
+    });
+  }
+
+  function changeSlide(newIndex) {
+    currentIndex = Math.max(0, Math.min(newIndex, slides.length - slidesPerPage));
+    showSlides(); 
+    setTimeout(updateNavigationDots, 500); 
+  }
+
+  document.querySelector('.video-prev-slide').addEventListener('click', () => {
+    changeSlide(currentIndex - slidesPerPage);
+  });
+
+  document.querySelector('.video-next-slide').addEventListener('click', () => {
+    changeSlide(currentIndex + slidesPerPage);
+  });
+
+  window.addEventListener('resize', () => {
+    slidesPerPage = calculateSlidesPerPage();
+    showSlides();
+    setupDots();
+    updateNavigationDots();
+  });
+
+  document.querySelectorAll('.video-image-slide .video-thumbnail').forEach(function(thumbnail) {
+
+    var previewVideoUrl = thumbnail.dataset.previewVideoUrl;
+    if (previewVideoUrl) {
+
+      var videoHtml = `
+        <video class="preview-video" autoplay loop muted playsinline width="100%" data-full-video-url="${thumbnail.dataset.fullVideoUrl}">
+          <source src="${previewVideoUrl}" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      `;
+      thumbnail.outerHTML = videoHtml;
+    }
+  });
+
+  document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('preview-video')) {
+      var previewVideo = e.target;
+      var fullVideoUrl = previewVideo.dataset.fullVideoUrl;
+
+      var fullVideoHtml = `
+        <video class="full-video" controls width="100%">
+          <source src="${fullVideoUrl}" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      `;
+      previewVideo.outerHTML = fullVideoHtml;
+      var fullVideo = document.querySelector('.full-video');
+      fullVideo && fullVideo.play();
+    }
+  });
+
+});
+</script>
+{% schema %}
+    {
+      "name": "Video and Image Slider",
+      "settings": [
+        {
+          "type": "text",
+          "id": "section_title",
+          "label": "Section Title",
+          "default": "Trusted by Home Cooks"
+        },
+         {
+          "type": "richtext",
+          "id": "description",
+          "label": "Section Description"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "video_image_block",
+          "name": "Video/Image Block",
+          "settings": [
+            {
+              "type": "text",
+              "id": "video_url",
+              "label": "Full Video URL"
+            },
+            {
+              "type": "text",
+              "id": "preview_video_url",
+              "label": "Preview Video URL"
+            },
+            {
+              "type": "image_picker",
+              "id": "image",
+              "label": "Image"
+            },
+            {
+              "type": "image_picker",
+              "id": "image_thumbnail",
+              "label": "Image Thumbnail"
+            }
+          ]
+        }
+      ],
+      "max_blocks": 12,
+      "presets": [
+        {
+          "name": "Video and Image Slider",
+          "category": "Custom"
+        }
+      ]
+    }
+{% endschema %}

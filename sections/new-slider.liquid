@@ -1,0 +1,276 @@
+<style>
+.slider-section {
+    text-align: center;
+    margin: 75px 0;
+}
+
+.slider-mask {
+    overflow: hidden; 
+}
+.slider-container>div {
+    cursor: grab;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    display: flex;
+    will-change: transform;
+    overflow-x: scroll;
+    scroll-snap-type: both mandatory;
+    padding-bottom: 20px;
+}
+.slider-section-title {
+    color: #141319;
+    font-family: 'Avenir Black', sans-serif;
+    font-size: 45px;
+    font-weight: 900;
+    text-transform: none;
+    margin-bottom: 30px;
+}
+
+.feature-slider {
+    gap: 20px; 
+}
+
+.feature-slider .slide {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #fff;
+    flex: 0 0 auto;
+    width: 40%;
+  max-width: 700px;
+    align-items: flex-end;
+    justify-content: flex-start;
+    position: relative;
+    cursor: -moz-grab;
+    border-radius: 20px;
+  aspect-ratio: 1;
+    scroll-snap-align: start;
+}
+
+.feature-slider .slide-content-desktop {
+    padding: 30px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.feature-slider .slide-heading {
+    font-size: 44px;
+    font-family: 'Avenir Roman', sans-serif;
+    font-weight: 400;
+    color: #fff;
+    text-align: left;
+    text-transform: none;
+    line-height: 1.2;
+}
+
+.feature-slider .slide-paragraph {
+    font-size: 18px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 300;
+    color: #fff;
+    text-align: left;
+    position: absolute;
+    bottom: 10px;
+    padding-right: 30px;
+}
+
+.slide-mobile-container {
+  display: none; 
+}
+
+@media only screen and (min-width: 1920px) {
+    .slider-mask {
+        margin: 0 10px;
+    }
+}
+@media only screen and (max-width: 1920px) and (min-width: 1024px) {
+    .slider-mask {
+        margin-left: 50px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .feature-slider .slide-heading {
+        font-size: 40px;
+    }
+
+    .feature-slider .slide {
+        min-height: 420px; 
+    }
+
+    .slider-mask {
+        margin-left: 20px;
+    }
+}
+
+@media (max-width: 767px) {
+  .feature-slider.mob__column {
+    display: initial;
+}
+    .slider-mask {
+        margin-left: 0;
+    }
+
+    .slider-section {
+        background: radial-gradient(51.75% 57.46% at 75.36% 48.44%, #5C5C63 0%, #141319 100%);
+        padding: 30px 0;
+        margin: 30px 0 0;
+    }
+
+    .feature-slider,
+    .slide-content-mobile,
+    .slide-paragraph-mobile,
+    .slide-mobile-container {
+        display: block
+    }
+
+    .slide-mobile-container {
+        margin-bottom: 35px;
+    }
+
+    .slider-section-title {
+        color: #fff;
+        font-size: 32px;
+        line-height: normal;
+        letter-spacing: -0.01em;
+    }
+
+    .slider-container {
+        padding: 0 20px;
+    }
+
+    .feature-slider {
+        padding-left: 0;
+    }
+
+    .slide.desktop, 
+    .slide-content-desktop {
+        display: none; 
+    }
+
+    .slide-content-mobile {
+        background-size: cover;
+        background-position: center;
+        min-height: 220px;
+        border-radius: 15px;
+        display: flex;
+        align-items: end;
+    }
+
+    .slide-heading-mobile {
+        color: #fff;
+        text-align: left;
+        font-size: 25px;
+        font-family: 'Avenir Roman',sans-serif;
+        text-transform: none;
+        max-width: 250px;
+        margin: 5px 5px;
+    }
+
+    .slide-paragraph-mobile {
+        color: #fff;
+        text-align: left;
+        font-family: 'Nunito',sans-serif;
+        font-size: 15px;
+        margin-top: 5px;
+    }
+}
+@media (min-width: 1800px){
+
+.slider-section {
+    max-width: 1920px;
+    margin: 75px auto;
+}
+  .slider-container>div {
+    padding-bottom: 49px;
+}
+  }
+</style>
+<div class="slider-section">
+    <h2 class="slider-section-title">{{ section.settings.section_title }}</h2>
+    <div class="slider-mask">
+        <div class="slider-container">
+            <div class="feature-slider mob__column">
+                {% for block in section.blocks %}
+                    <div class="slide desktop" style="background-image: url('{{ block.settings.image | img_url: '800x' }}');">
+                        <div class="slide-content-desktop">
+                            <h3 class="slide-heading" style="max-width: {{ block.settings.heading_element_width }}px;">{{ block.settings.heading }}</h3>
+                            <p class="slide-paragraph">{{ block.settings.text }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="slide-mobile-container">
+                        <div class="slide-content-mobile" style="background-image: url('{{ block.settings.mobile_image | img_url: '800x' }}');">
+                            <h3 class="slide-heading-mobile">{{ block.settings.heading }}</h3>
+                        </div>
+                        <p class="slide-paragraph-mobile">{{ block.settings.text }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+</script>
+
+{%  schema  %}
+{
+  "name": "Feature Slider",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "Like a Range Hood, But Better"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Slide Image (Desktop/Laptop/Tablet)"
+        },
+        {
+            "type": "image_picker",
+            "id": "mobile_image",
+            "label": "Mobile Image"
+        },
+        {
+            "type": "text",
+            "id": "heading",
+            "label": "Heading"
+        },
+        {
+            "type": "range",
+            "id": "heading_element_width",
+            "label": "Heading Element Width",
+            "min": 300,
+            "max": 500,
+            "step": 2,
+            "default": 320,
+            "unit": "px"
+        },
+        {
+            "type": "textarea",
+            "id": "text",
+            "label": "Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Feature Slider"
+    }
+  ]
+}
+{% endschema %}

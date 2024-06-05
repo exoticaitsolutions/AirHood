@@ -1,0 +1,401 @@
+<script type="application/ld+json">
+  {
+  "@context": "http://schema.org",
+              "@type": "Organization",
+              "name": "{{ shop.name }}",
+  {% if section.settings.logo %}
+    {% assign image_size = section.settings.logo.width | append: 'x' %}
+    "logo": "https:{{ section.settings.logo | img_url: image_size }}",
+  {% endif %}
+  "url": "{{ shop.url }}{{ page.url }}"
+  }
+</script>
+
+{% if template.name == 'index' %}
+  <style>
+    .head-rcl path {
+      fill: #fff;
+    }
+    .fixed-header path {
+      fill: #323232;
+    }
+  </style>
+  <header id="header-new" data-page="home" class="head-rcl">
+  {% else %}
+    <header id="header-new" data-page="other" class="head-rcl">
+    {% endif %}
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          {% if template.name == 'index' and section.settings.hide_logo_on_desktop_homepage %}
+            <style>
+              @media only screen and (min-width: 768px) { 
+                .head-rcl .logo { 
+                  display: none; 
+                }
+                .fixed-header .logo {
+                  display: inline;
+                }
+              }
+            </style>
+          {% endif %}
+          <a href="{{ shop.url }}">
+            {% if section.settings.logo %}
+              <img
+                src="{{ section.settings.logo | img_url: 'master' }}"
+                alt="{{ shop.name }}"
+                style="width: {{ section.settings.logo_display_width }}px;">
+            {% else %}
+              {{ shop.name }}
+            {% endif %}
+          </a>
+        </div>        
+        <div class="menu-and-cta">
+<nav class="main-menu desktop-menu">
+  {% assign main_menu = linklists[section.settings.main_linklist] %}
+  {% if main_menu.links != blank %}
+    {% for link in main_menu.links %}
+      <div class="menu-item">
+        <a href="{{ link.url }}" class="menu-link">{{ link.title }}</a>
+        {% if link.links != blank %}
+          <span class="dropdown-icon"></span>
+          <ul class="sub-menu">
+            {% for sub_link in link.links %}
+              <li><a href="{{ sub_link.url }}">{{ sub_link.title }}</a></li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>No links found in main menu.</p>
+  {% endif %}
+</nav>
+
+<style>
+.dropdown-icon {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-top: 2px solid #000;
+    border-right: 2px solid #000;
+    transform: rotate(135deg) !important;
+    margin-left: 5px;
+    transition: transform 0.3s;
+  }
+.menu-item.open .dropdown-icon{
+  transform: rotate(-44deg) !important;
+}
+  .sub-menu {
+    display: none;
+    list-style: none;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+    padding: 15px;
+    position: absolute;
+    z-index: 1;
+    background: #fff;
+  }
+  ul.sub-menu li:last-child {
+    margin: 0;
+}
+  .menu-item {
+    cursor: pointer;
+}
+body.index .dropdown-icon {
+    filter: invert(1);
+}
+  body.index .sub-menu li a{
+    color: #000 !important;
+  }
+.head-rcl.fixed-header .dropdown-icon {
+    filter: invert(0) !important;
+}
+
+
+  
+  .menu-item.open .dropdown-icon {
+    transform: rotate(-135deg);
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var dropdownIcons = document.querySelectorAll('.dropdown-icon');
+    dropdownIcons.forEach(function(icon) {
+      icon.addEventListener('click', function() {
+        var menuItem = icon.closest('.menu-item');
+        menuItem.classList.toggle('open');
+        var subMenu = menuItem.querySelector('.sub-menu');
+        subMenu.style.display = subMenu.style.display === 'block' ? 'none' : 'block';
+      });
+    });
+  });
+</script>
+
+
+          {% if section.settings.cta_text and section.settings.cta_url %}
+            <a href="{{ section.settings.cta_url }}" class="cta-button">{{ section.settings.cta_text }}</a>
+          {% endif %}
+        
+          <div class="cart-icon-container">
+            <a href="javascript:void(0);" class="cart-icon {% if cart.item_count > 0 %}has-items{% endif %}" onclick="window.SLIDECART_OPEN();">
+              <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_1608_92)">
+                <path d="M19.4375 16.25C20.375 16.25 21.2 15.7375 21.625 14.9625L26.1 6.85C26.5625 6.025 25.9625 5 25.0125 5H6.5125L5.3375 2.5H1.25V5H3.75L8.25 14.4875L6.5625 17.5375C5.65 19.2125 6.85 21.25 8.75 21.25H23.75V18.75H8.75L10.125 16.25H19.4375ZM7.7 7.5H22.8875L19.4375 13.75H10.6625L7.7 7.5ZM8.75 22.5C7.375 22.5 6.2625 23.625 6.2625 25C6.2625 26.375 7.375 27.5 8.75 27.5C10.125 27.5 11.25 26.375 11.25 25C11.25 23.625 10.125 22.5 8.75 22.5ZM21.25 22.5C19.875 22.5 18.7625 23.625 18.7625 25C18.7625 26.375 19.875 27.5 21.25 27.5C22.625 27.5 23.75 26.375 23.75 25C23.75 23.625 22.625 22.5 21.25 22.5Z" fill="#323232"/>
+                </g>
+                <defs>
+                <clipPath id="clip0_1608_92">
+                <rect width="30" height="30" fill="white"/>
+                </clipPath>
+                </defs>
+              </svg>
+              <span class="cart-item-indicator" style="background-color: #DA291C; border-radius: 50%; width: 10px; height: 10px; position: absolute; top: -16px; right: 0;"></span>
+            </a>
+          </div>
+
+          <button class="hamburger-menu hamburger hamburger--collapse" type="button">
+            <span class="hamburger-box">
+              <span class="hamburger-inner"></span>
+            </span>
+            <span class="cart-item-indicator" style="background-color: #DA291C; border-radius: 50%; width: 10px; height: 10px; position: absolute; top: 5px; right: 0;"></span>
+          </button>
+
+          <div class="mobile-dropdown">
+            <div class="mobile-header-top">
+                  <div class="social-icons">
+                      <div class="social-media-icons">
+                          <a href="https://www.facebook.com/theairhood" class="facebook-icon">
+                              <img src="https://cdn.shopify.com/s/files/1/0609/3235/8403/files/Group_1.svg?v=1697523504" alt="Facebook" style="max-width: 100%;">
+                          </a>
+                          <a href="https://www.youtube.com/@theairhood" class="youtube-icon">
+                              <img src="https://cdn.shopify.com/s/files/1/0609/3235/8403/files/youtube_1_1.svg?v=1697523504" alt="YouTube" style="max-width: 100%;">
+                          </a>
+                          <a href="https://www.instagram.com/theairhood/" class="instagram-icon">
+                              <img src="https://cdn.shopify.com/s/files/1/0609/3235/8403/files/instagram_1_1.svg?v=1697523504" alt="Instagram" style="max-width: 100%;">
+                          </a>
+                      </div>
+                      
+                    <a href="javascript:void(0);" class="cart-icon {% if cart.item_count > 0 %}has-items{% endif %}" onclick="window.SLIDECART_OPEN();">
+                      <img src="https://cdn.shopify.com/s/files/1/0844/4352/9524/files/shopping_cart.svg?v=1698730091" alt="Cart" style="position: relative;">
+                      <span class="cart-item-indicator" style="background-color: #DA291C; border-radius: 50%; width: 10px; height: 10px; position: absolute; top: 0; right: 0;"></span>
+                    </a>                  
+                  </div>
+              </div>
+            {% if main_menu.links != blank %}
+                {% for link in main_menu.links %}
+                    <div class="header-links">
+                        <a href="{{ link.url }}">{{ link.title }}</a>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <img src="https://cdn.shopify.com/s/files/1/0609/3235/8403/files/Airhood053_1_1.jpg?v=1697524529" style="max-width: 100%; margin-top: 20px;">
+            </div>
+            <div class="overlay"></div>
+
+        
+        
+        </div>
+      </div>
+    </div>
+  </header>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const header = document.getElementById("header-new");
+    const ctaButton = document.querySelector('.cta-button');
+    const hamburgerMenu = document.querySelector('.hamburger-menu');
+    const mobileDropdown = document.querySelector('.mobile-dropdown');
+    const menuLinks = document.querySelectorAll('.main-menu.desktop-menu a');
+    const scrollLimit = 0;
+    const overlay = document.querySelector('.overlay');
+
+    window.addEventListener("scroll", function() {
+      const dataPage = header.getAttribute('data-page');
+      if (window.scrollY > scrollLimit) {
+        header.classList.add("fixed-header");
+        ctaButton.classList.add("scrolling");
+
+        if (dataPage === 'home') {
+          menuLinks.forEach(link => link.classList.add('scrolled'));
+        }
+      } else {
+        header.classList.remove("fixed-header");
+        ctaButton.classList.remove("scrolling");
+
+        if (dataPage === 'home') {
+          menuLinks.forEach(link => link.classList.remove('scrolled'));
+        }
+      }
+
+      if (dataPage === 'home') {
+        if (window.scrollY > scrollLimit) {
+          ctaButton.style.backgroundColor = "#da281b";
+          ctaButton.style.borderColor = "#da281b";
+          ctaButton.style.color = "white";
+        } else {
+          ctaButton.style.backgroundColor = "transparent";
+          ctaButton.style.borderColor = "white";
+          ctaButton.style.color = "white";
+        }
+      }
+    });
+
+    hamburgerMenu.addEventListener('click', function() {
+      mobileDropdown.classList.toggle('active');
+      overlay.classList.toggle('active'); 
+      hamburgerMenu.classList.toggle('is-active');  
+    });
+
+    overlay.addEventListener('click', function() {
+      mobileDropdown.classList.remove('active');
+      overlay.classList.remove('active');  
+      hamburgerMenu.classList.remove('is-active');  
+    });
+
+    const closeMobileMenu = document.querySelector('.close-mobile-menu');
+    closeMobileMenu.addEventListener('click', function() {
+      mobileDropdown.classList.remove('active');
+      overlay.classList.remove('active');  
+      hamburgerMenu.classList.remove('is-active');  
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  function updateCartItemIndicator() {
+    fetch('/cart.js')
+      .then(response => response.json())
+      .then(cart => {
+        const cartItemCount = cart.item_count;
+        const cartIndicators = document.querySelectorAll('.cart-item-indicator');
+
+        cartIndicators.forEach(indicator => {
+          if (cartItemCount > 0) {
+            indicator.style.display = 'block';
+          } else {
+            indicator.style.display = 'none';
+          }
+        });
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }
+
+  window.SLIDECART_UPDATED = function(cart) {
+    updateCartItemIndicator();
+  };
+
+  const addToCartButtons = document.querySelectorAll('#add-to-cart-button');
+
+  addToCartButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const variantId = this.getAttribute('data-variant-id');
+      const quantity = Number(this.getAttribute('data-quantity')) || 1;
+
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          items: [{
+            id: variantId,
+            quantity: quantity
+          }]
+        })
+      })
+      .then(response => response.json())
+      .then(cart => {
+        updateCartItemIndicator();
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    });
+  });
+
+  const removeFromCartButtons = document.querySelectorAll('.remove');
+
+  removeFromCartButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const variantId = this.getAttribute('data-variant-id');
+
+      fetch(`/cart/change.js`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: variantId,
+          quantity: 0 
+        })
+      })
+      .then(response => response.json())
+      .then(cart => {
+        updateCartItemIndicator();
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    });
+  });
+});
+</script>
+
+{% schema %}
+  {
+    "name": "Header",
+    "class": "shopify-section--header",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Top bar"
+      },
+      {
+        "type": "link_list",
+        "id": "top_bar_menu",
+        "label": "Menu"
+      },
+      {
+        "type": "text",
+        "id": "cta_text",
+        "label": "CTA Text"
+      },
+      {
+        "type": "url",
+        "id": "cta_url",
+        "label": "CTA URL"
+      }, {
+        "type": "header",
+        "content": "Logos"
+      }, {
+        "type": "range",
+        "id": "logo_display_width",
+        "label": "Logo display width",
+        "step": 5,
+        "min": 105,
+        "max": 205,
+        "default": 205,
+        "unit": "px"
+      }, {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo",
+        "info": "400 x 200px recommended"
+      }, {
+        "type": "checkbox",
+        "id": "hide_logo_on_desktop_homepage",
+        "label": "Hide the logo on desktop homepage?",
+        "default": false
+      }, {
+        "type": "header",
+        "content": "Menus"
+      }, {
+        "type": "link_list",
+        "id": "main_linklist",
+        "label": "Main menu",
+        "default": "main-menu"
+      }
+    ]
+  }
+{% endschema %}

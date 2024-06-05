@@ -1,0 +1,195 @@
+{% comment %}
+** Sign Up - homepage partial **
+- Draggable section
+{% endcomment %}
+
+{% include 'include-signup' %}
+
+{% schema %}
+
+{
+  "name": "Sign-Up",
+  "class": "Sign-Up-section",
+  "settings": [
+    {
+        "type": "header",
+        "content": "Main config"
+    },
+    {
+    "type":      "text",
+    "id":        "media_query_break",
+    "label":     "Query break",
+    "default":   "769"
+    },
+    {
+      "type": "checkbox",
+      "id": "wide_display",
+      "label": "Wide display",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "bk_color",
+      "label": "Color for the background"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_bk_desktop",
+      "label": "Upload desktop background image"
+    },
+    {
+      "type": "text",
+      "id": "image_bk_desktop_position",
+      "label": "Background position",
+      "default":"center"
+    },
+    {
+      "type": "text",
+      "id": "image_bk_desktop_size",
+      "label": "Background size",
+      "default":"contain"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_bk_mobile",
+      "label": "Upload mobile background image"
+    },
+    {
+        "type": "header",
+        "content": "Form config"
+    },
+    {
+      "type": "text",
+      "id": "form_max_width",
+      "label": "Max width",
+      "default":"550px"
+    },
+    {
+      "type": "text",
+      "id": "custom_form_id",
+      "label": "Form id",
+      "default": "default_form_id"
+    },
+    {
+      "type": "text",
+      "id": "custom_klaviyo_list_id",
+      "label": "Klaviyo custom list id"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_title",
+      "label": "Heading",
+      "default": "CROWDFUNDING SOON!"
+    },
+    {
+      "type": "color",
+      "id": "newsletter_title_color",
+      "label": "Heading color",
+      "default" : "#000"
+    },
+    {
+      "type": "richtext",
+      "id": "newsletter_text",
+      "label": "Subheading",
+      "default": "<p>Sign up now to access the launch-day deal of up to <strong>[percentageoff] off</strong>.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "privacy_text",
+      "label": "Privacy text",
+      "default": "<p>We respect your privacy</p>"
+    },
+    {
+      "type": "select",
+      "id": "newsletter_section_text_align",
+      "label": "Text alignment",
+      "options": [
+         {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+     ],
+      "default": "center"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Upload banner background image",
+      "info":"1600 x 300px recommended"
+    },
+    {
+        "type": "header",
+        "content": "Progress Bar config"
+    },
+    {
+      "type": "checkbox",
+      "id": "progress_bar",
+      "label": "Show progress bar",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "progress_init_date",
+      "label": "Initial date for progress bar",
+      "default": "2019-08-30"
+    },
+    {
+      "type": "text",
+      "id": "progress_percentage_init",
+      "label": "Percentage init for progress bar",
+      "default": "57"
+    },
+    {
+      "type": "text",
+      "id": "progress_max_percentage",
+      "label": "Percentage max for progress bar",
+      "default": "99"
+    },
+    {
+      "type": "text",
+      "id": "progress_campaign_duration",
+      "label": "Campaign duration in days for progress bar",
+      "default": "20"
+    },
+    {
+      "type": "color",
+      "id": "progress_bar_color",
+      "label": "Color for progress bar",
+      "default": "#007bff"
+    },
+    {
+      "type": "text",
+      "id": "progress_bar_height",
+      "label": "Height for progress bar",
+      "default": "2"
+    },
+    {
+      "type": "text",
+      "id": "progress_left_text",
+      "label": "Text on left for progress bar",
+      "default": "Limited spots left"
+    },
+    {
+      "type": "text",
+      "id": "progress_right_text",
+      "label": "Text on right for progress bar",
+      "default": "%s Reserved"
+    }
+  ],
+  "presets": [{
+    "name": "Sign-Up",
+    "category": "RF Customs",
+    "settings": {
+    }
+  }]
+}
+
+{% endschema %}

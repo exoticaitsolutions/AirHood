@@ -1,0 +1,616 @@
+<style>
+
+
+.product-option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.product-option input[type="radio"] {
+    display: none; /* Hide the default radio button */
+}
+
+.product-option label {
+    position: relative;
+    padding-left: 35px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 0;
+}
+.product-option label:before,
+.product-option label:after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+}
+
+.product-option label:before {
+    left: 0;
+    top: 50%;
+    width: 20px;
+    height: 20px;
+    transform: translateY(-50%);
+    background: #fff;
+    border: 2px solid #d9d9d9;
+}
+
+.product-option input[type="checkbox"]:checked + label:before {
+    border-color: #DA291C;
+}
+
+.product-option input[type="checkbox"]:checked + label:after {
+    top: 50%;
+    left: 4px;
+    width: 12px;
+    height: 12px;
+    transform: translateY(-50%);
+    background: #DA291C;
+}
+
+input.addon-checkbox {
+    display: none;
+}
+.addon-label {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
+}
+
+.addon-price {
+    margin-left: auto;
+    font-weight: bold;
+    color: #DA291C;
+}
+
+.product-option.variant-buttons {
+    width: 100%;
+    gap: 10px;
+}
+.discount-allocations {
+    display: none !important;
+}
+{% for variant in product.variants %}
+@media only screen and (max-width: 768px) {
+  div#variant-{{ variant.id }} {
+    display: block;
+  }
+}
+{% endfor %}
+</style>
+
+<div class="addon-box www">
+  <!-- oil filter upsell -->
+   {%- if product.metafields.custom.oil_filter_upsell != blank  -%}
+    <div class="cstm-oil-filter-upsell">
+      <!-- <div class="pd-set-make-it-bundle">Make it a bundle: <span>Add Extra Oil Filter</span></div> -->
+      <form id="add-on-form-{{ product.id }}" action="/cart/add" method="post">
+        <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+        <div class="add-on-ul">
+          <ul>
+            {% assign oil_upsell_product = product.metafields.custom.oil_filter_upsell.value %}
+            <li>
+              <div class="label-col product-option">
+              
+                <span class="product-set-name">{{ settings.oil_upsell_heading }}</span>
+                 
+                
+              </div>
+              <div class="oil-main-content" onclick="toggleCheckbox('{{ oil_upsell_product.variants.first.id }}')">
+                  <div class="product-option" onclick="toggleCheckboxDiv(event)">
+               <input type="checkbox" name="add_on[]" id="mine_{{ oil_upsell_product.variants.first.id }}" class="checkbox_product" data-id="{{ oil_upsell_product.variants.first.id }}" value="{{ oil_upsell_product.variants.first.id }}">
+                   <label for="mine_{{ oil_upsell_product.variants.first.id }}" class="checkbox-label">
+              </label>
+               </div>
+                <div class="oil-pro-image">
+                 <img src="{{ oil_upsell_product.featured_image | img_url: 'master' }}">
+                </div>
+                <div class="oil-content">
+                 <a href="{{ oil_upsell_product.url }}">  <h4>{{ oil_upsell_product.title }}</h4> </a>
+                <div class="discripstion-price">
+                   <div class="descripstion-content">
+                  <p>{{ settings.oil_upsell_description }}</p>
+                   </div>
+                  <div class="pd-set-item-text" onclick="toggleCheckbox('{{ oil_upsell_product.variants.first.id }}')">
+                  <span class="pd-set-title"> 
+                    <span class="pd-set-price-value">
+                      <span class="pd-set-price-value-green">
+                        + {{ oil_upsell_product.price | divided_by: 2 | ceil | money }}
+                      </span>
+                      <span class="price strike-through line-item-discountt" style="opacity: 0.7; text-decoration: line-through;">{{ oil_upsell_product.price | money }}</span>
+                    </span>
+                  </span>
+                </div>
+                </div>
+              </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </form>
+    </div>
+  {%- endif -%}
+<!-- end oil filter upsell -->
+
+<div class="label-col-warranty"> 
+  <label  class="checkbox-label-warranty"> 
+      <span class="product-set-warranty">
+      <p>Extended Warranty</p></span></label> 
+  </div>
+  <div class="warranty-sec">
+ {% assign product_one = all_products['6-month-extended-warranty'] %}
+  {% assign product_two = all_products['1-year-extended-warranty'] %}
+
+  {% if product_one and product_one.variants.size > 0 %}
+    <div class="product-option warranty-option">
+         
+     <div class="warrantly-title product-option">
+        <input type="checkbox" name="addon-product" value="{{ product_one.variants.first.id }}" id="addon-{{ product_one.id }}" data-title="AirHood | 6 Month Extended Warranty" class="addon-checkbox">
+ 
+      <label for="addon-{{ product_one.id }}">
+        <div class="oil-pro-image">
+     <img src="{{ product_one.featured_image | img_url: 'master' }}">
+    </div>
+        {{ product_one.title }}
+      </label>
+     </div>
+     <div class="warrantly-price">
+    {% if product_one.price_min == 0 %}
+          FREE
+        {% else %}
+           + {{ product_one.price_min | money }}
+        {% endif %}
+       </div>
+    </div>
+  {% endif %}
+  
+  {% if product_two and product_two.variants.size > 0 %}
+    <div class="product-option warranty-option">
+     
+    <div class="warrantly-title product-option">
+            <input type="checkbox" name="addon-product" value="{{ product_two.variants.first.id }}" id="addon-{{ product_two.id }}" data-title="AirHood® CoverPlus | 1 Year Extended Warranty" class="addon-checkbox">
+
+      <label for="addon-{{ product_two.id }}">
+          <div class="oil-pro-image">
+     <img src="{{ product_two.featured_image | img_url: 'master' }}">
+    </div>
+        {{ product_two.title }} 
+       
+      </label>
+    </div>
+     <div class="warrantly-price">
+    {% if product_two.price_min == 0 %}
+          FREE
+        {% else %}
+         +   {{ product_two.price_min | money }}
+        {% endif %}
+       </div>
+    </div>
+  {% endif %}
+
+  </div>
+</div>
+
+<div class="button-container">
+  {% for variant in product.variants %}
+    
+    <div class="{{ forloop.index }} product-option variant-buttons" id="variant-{{ variant.id }}" data-available="{{ variant.available }}" data-klaviyo-form-id="{{ klaviyo_form_id }}" style="display: none;">
+      {% if variant.available %}
+        <button id="custom-add-to-cart" class="add-to-cart-button" data-variant-id="{{ variant.id }}" data-product-handle="{{ product.handle }}">Add to Cart</button>
+        <button id="custom-button" class="order-now-button" data-variant-id="{{ variant.id }}" data-product-handle="{{ product.handle }}">Order Now</button>
+      {% else %}
+        <div class="notify-form-container">
+            {% comment %}
+          <div class="klaviyo-form-container">
+          {% assign klaviyo_form_id = '' %}
+          {% case product.handle %}
+            {% when 'airhood-wireless-the-worlds-first-portable-kitchen-air-cleaner' %}
+              {% assign klaviyo_form_id = 'R27JTS' %}
+            {% when 'wireless-all-in-set' %}
+              {% assign klaviyo_form_id = 'UjieH5' %}
+            {% when 'wireless-daily-trio' %}
+              {% assign klaviyo_form_id = 'VYQBGc' %}
+            {% when 'wireless-fresh-trio' %}
+              {% assign klaviyo_form_id = 'VwQPJU' %}
+          {% endcase %}
+        
+          {% assign renderForm = false %}
+          {% if variant.available == false and renderForm == false %}
+            <div id="klaviyo-form-{{ variant.id }}" class="klaviyo-form-{{ klaviyo_form_id }}" style="display: none;"></div>
+            {% assign renderForm = true %}
+          {% endif %}
+          </div>
+          {% endcomment %}
+          <div class="notify-form-buttons">
+            <button id="custom-notify-me" class="notify-me-button klaviyo-bis-trigger" data-variant-id="{{ variant.id }}">Notify Me</button>
+            <button id="custom-sold-out" class="sold-out-button" data-variant-id="{{ variant.id }}" disabled>Sold Out</button>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  {% endfor %}
+</div>
+
+
+<!-- <div class="addon-box www">
+  {% assign product_one = all_products['6-month-extended-warranty'] %}
+  {% assign product_two = all_products['1-year-extended-warranty'] %}
+
+  {% if product_one and product_one.variants.size > 0 %}
+    <div class="product-option">
+      <input type="checkbox" name="addon-product" value="{{ product_one.variants.first.id }}" id="addon-{{ product_one.id }}" data-title="AirHood | 6 Month Extended Warranty" class="addon-checkbox" >
+      <label for="addon-{{ product_one.id }}">
+        {{ product_one.title }} - 
+        {% if product_one.price_min == 0 %}
+          FREE
+        {% else %}
+          {{ product_one.price_min | money_with_currency }}
+        {% endif %}
+      </label>
+    </div>
+  {% endif %}
+  
+  {% if product_two and product_two.variants.size > 0 %}
+    <div class="product-option">
+      <input type="checkbox" name="addon-product" value="{{ product_two.variants.first.id }}" id="addon-{{ product_two.id }}" data-title="AirHood® CoverPlus | 1 Year Extended Warranty" class="addon-checkbox">
+      <label for="addon-{{ product_two.id }}">
+        {{ product_two.title }} - 
+        {% if product_two.price_min == 0 %}
+          FREE
+        {% else %}
+          {{ product_two.price_min | money_with_currency }}
+        {% endif %}
+      </label>
+    </div>
+  {% endif %}
+
+</div> -->
+<script>
+    function toggleCheckboxDiv(event) {
+        // Stop the event propagation to prevent checking the checkbox
+        event.stopPropagation();
+    }
+
+    function toggleCheckbox(checkboxId) {
+        var checkbox = document.getElementById('mine_' + checkboxId);
+        checkbox.checked = !checkbox.checked;
+    }
+
+  $(".label-col.product-option, .label-col.product-option *").click(function(event) {
+        // Prevent the checkbox click event from triggering when clicking on the inner elements
+        event.stopPropagation();
+        
+        // Toggle the checkbox state
+        var checkbox = $(this).closest('.label-col').find('.checkbox_product');
+        checkbox.prop("checked", !checkbox.prop("checked"));
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+const warrantyTitles = ['AirHood | 6 Month Extended Warranty', 'AirHood® CoverPlus | 1 Year Extended Warranty'];
+
+function getSelectedVariant() {
+    const selectedVariantInput = document.querySelector('#color-selector input[type="radio"]:checked');
+    return selectedVariantInput ? selectedVariantInput.value : null;
+}
+
+function getSelectedAddon() {
+    const addonCheckbox = document.querySelector('input[name="addon-product"]:checked');
+    return addonCheckbox ? { id: addonCheckbox.value, title: addonCheckbox.dataset.title } : null;
+}
+
+function getQuantity(productId) {
+    const quantityInput = document.querySelector(`[data-product-id="${productId}"] input[name="quantity"]`);
+    return quantityInput ? parseInt(quantityInput.value, 10) : 1;
+}
+
+function cartContainsWarranty() {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: '/cart.js',
+            dataType: 'json',
+            success: function(cart)
+ {
+                const warrantyInCart = cart.items.some(item => warrantyTitles.includes(item.product_title));
+                resolve(warrantyInCart);
+            },
+            error: function(xhr) {
+                reject(xhr);
+            }
+        });
+    });
+}
+
+function addToCart(product, quantity) {
+    return $.ajax({
+        type: 'POST',
+        url: '/cart/add.js',
+        data: {
+            quantity: quantity,
+            id: product.id
+        },
+        dataType: 'json'
+    });
+}
+
+document.querySelectorAll('input[name="addon-product"]').forEach(function(checkbox)
+ {
+    checkbox.addEventListener('change', function() {
+        document.querySelectorAll('input[name="addon-product"]').forEach(function(other) {
+            if (other !== checkbox) other.checked = false;
+        });
+    });
+});
+
+// Define a global variable to keep track of products with added warranty
+let productsWithWarranty = [];
+
+// Update the event listener for the "Add to Cart" button
+$('.add-to-cart-button').click(async function(e) {
+e.preventDefault();
+
+const productId = $(this).closest('[data-product-id]').data('product-id');
+const selectedVariantId = getSelectedVariant();
+const selectedAddon = getSelectedAddon();
+const quantity = getQuantity(productId);
+
+if (!selectedVariantId) {
+    return;
+}
+
+try {
+    // Check if the warranty is already in the cart for this product
+    const warrantyInCartForProduct = await isWarrantyInCartForProduct(productId);
+    if (selectedAddon && !warrantyInCartForProduct && !productsWithWarranty.includes(productId)) {
+        await addToCart(selectedAddon, 1);
+        productsWithWarranty.push(productId); // Add the product to the list of products with added warranty
+    }
+
+    // Add the selected checkbox product to the cart along with the main product
+    const selectedCheckboxProductId = $('input.checkbox_product:checked').val();
+    if (selectedCheckboxProductId) {
+        await addToCart({ id: selectedCheckboxProductId }, 1);
+    }
+
+    await addToCart({ id: selectedVariantId }, quantity);
+
+    SLIDECART_UPDATE(); 
+    setTimeout(function() { SLIDECART_OPEN(); }, 500); 
+    updateCartCount(); // Call the updateCartCount function after successfully adding the item to the cart
+
+} catch (error) {
+    console.error('Error adding product to cart:', error);
+}
+});
+
+
+// Update the event listener for the "Order Now" button
+$('.order-now-button').click(async function(e) {
+e.preventDefault();
+
+const productId = $(this).closest('[data-product-id]').data('product-id');
+const selectedVariantId = getSelectedVariant();
+const selectedAddon = getSelectedAddon();
+const quantity = getQuantity(productId);
+
+if (!selectedVariantId) {
+    return;
+}
+
+try {
+    // Check if the warranty is already in the cart for this product
+    const warrantyInCartForProduct = await isWarrantyInCartForProduct(productId);
+    if (selectedAddon && !warrantyInCartForProduct && !productsWithWarranty.includes(productId)) {
+        await addToCart(selectedAddon, 1);
+        productsWithWarranty.push(productId); // Add the product to the list of products with added warranty
+    }
+
+    // Add the selected checkbox product to the cart along with the main product
+    const selectedCheckboxProductId = $('input.checkbox_product:checked').val();
+    if (selectedCheckboxProductId) {
+        await addToCart({ id: selectedCheckboxProductId }, 1);
+    }
+
+    await addToCart({ id: selectedVariantId }, quantity);
+
+    SLIDECART_UPDATE(); 
+    setTimeout(function() { SLIDECART_OPEN(); }, 500); 
+    updateCartCount(); // Call the updateCartCount function after successfully adding the item to the cart
+
+} catch (error) {
+    console.error('Error adding product to cart:', error);
+}
+});
+
+
+async function isWarrantyInCartForProduct(productId) {
+return new Promise((resolve, reject) => {
+    $.ajax({
+        url: '/cart.js',
+        dataType: 'json',
+        success: function(cart)
+ {
+            const warrantyInCartForProduct = cart.items.some(item => item.product_id === productId && item.product_title === "AirHood | 6 Month Extended Warranty");
+            resolve(warrantyInCartForProduct);
+        },
+        error: function(xhr) {
+            reject(xhr);
+        }
+    });
+});
+}
+
+
+function updateCartCount() {
+// Get all elements with the 'cart-count' class
+const cartCountElements = document.querySelectorAll('.cart-count');
+
+// Fetch cart data and update the cart count
+$.getJSON('/cart.js', function(cart)
+ {
+    const itemCount = cart.items.reduce((total, item) => total + item.quantity, 0);
+    cartCountElements.forEach(element => {
+        element.textContent = itemCount;
+    });
+});
+}
+
+// Initialize cart count on page load
+updateCartCount();
+
+// Update cart count whenever the cart is updated
+$(document).on('cart:updated', function() {
+updateCartCount();
+});
+
+
+});
+
+window.SLIDECART_UPDATE = async function() {
+async function getCartItems() {
+    try {
+        const response = await $.ajax({url: '/cart.js', dataType: 'json'});
+        return response.items;
+    } catch (error) {
+        console.error('Error fetching cart items:', error);
+        return [];
+    }
+}
+
+async function removeCartItem(itemKey) {
+    try {
+        await $.ajax({
+            type: 'POST',
+            url: '/cart/change.js',
+            data: { id: itemKey, quantity: 0 },
+            dataType: 'json'
+        });
+        console.log('Warranty item removed:', itemKey);
+    } catch (error) {
+        console.error('Error removing cart item:', error);
+    }
+}
+
+const cartItems = await getCartItems();
+console.log('Current cart items:', cartItems);
+
+const mainProductTitles = ['airhood-wired-the-worlds-first-portable-kitchen-air-cleaner']; // Adjust this list to match your main products
+console.log('Main product titles:', mainProductTitles);
+
+cartItems.forEach(async item => {
+    if (warrantyTitles.includes(item.product_title)) {
+        console.log('Warranty item found:', item.product_title);
+
+        // Adjust this logic to match your warranty items to their corresponding main products
+        const correspondingMainProduct = mainProductTitles.find(title => 
+            item.product_title.includes(title)
+        );
+
+        const mainProductInCart = cartItems.some(mainItem => 
+            mainItem.product_title.includes(correspondingMainProduct)
+        );
+
+        console.log('Corresponding main product:', correspondingMainProduct, 'Is in cart:', mainProductInCart);
+
+        if (!mainProductInCart) {
+            await removeCartItem(item.key);
+        }
+    }
+});
+};
+
+</script>
+<script>
+jQuery(document).ready(function() {
+    function updateUIForVariant(variantId) {
+        var variantButtons = jQuery('#variant-' + variantId);
+        var isAvailable = variantButtons.data('available');
+
+        jQuery('.product-option.variant-buttons').hide();
+        jQuery('.klaviyo-form').hide();
+
+        if (isAvailable) {
+            variantButtons.find('.add-to-cart-button, .order-now-button').show();
+        } else {
+            variantButtons.find('.notify-me-button, .sold-out-button').show();
+        }
+
+        variantButtons.show();
+    }
+
+    function findFirstAvailableVariant() {
+        var firstAvailableVariantId = null;
+        jQuery('.product-option.variant-buttons').each(function() {
+            if (jQuery(this).data('available')) {
+                firstAvailableVariantId = this.id.replace('variant-', '');
+                return false; 
+            }
+        });
+        return firstAvailableVariantId;
+    }
+
+    var initialVariantId = jQuery('input[type="radio"][name^="sw"]:checked').val();
+    if (!initialVariantId) {
+        initialVariantId = findFirstAvailableVariant();
+        if (initialVariantId) {
+            jQuery('input[type="radio"][name^="sw"][value="' + initialVariantId + '"]').prop('checked', true);
+        }
+    }
+    updateUIForVariant(initialVariantId);
+
+    jQuery('input[type="radio"][name^="sw"]').change(function() {
+        var variantId = jQuery(this).val();
+        updateUIForVariant(variantId);
+    });
+
+    jQuery(document).on('click', '.notify-me-button', function() {
+        var variantId = jQuery(this).data('variant-id');
+        var formSelector = '#klaviyo-form-' + variantId;
+        var formInsideSelector = formSelector + ' form';
+
+        jQuery('.klaviyo-form').hide();
+        jQuery(formInsideSelector).css('display', ''); 
+        jQuery(formSelector).show();
+    });
+});
+</script>
+<script>
+function updatePriceDisplay() {
+    const priceElements = document.querySelectorAll('span.price');
+    priceElements.forEach(function(el) {
+        if (el.textContent.trim() === '$0.00') {
+            el.textContent = 'FREE';
+        }
+    });
+}
+
+function debounce(func, wait) {
+    let timeout;
+
+    return function executedFunction(...args) {
+        const later = function() {
+            clearTimeout(timeout);
+            func(...args);
+        };
+
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+const debouncedUpdatePriceDisplay = debounce(updatePriceDisplay, 100); 
+
+const observer = new MutationObserver(function(mutations) {
+    mutations.forEach(debouncedUpdatePriceDisplay);
+});
+
+const targetElement = document.body; 
+observer.observe(targetElement, { childList: true, subtree: true });
+
+debouncedUpdatePriceDisplay();
+</script>

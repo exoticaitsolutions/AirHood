@@ -1,0 +1,230 @@
+
+{% if section.settings.section_id.size > 0 %}
+  <!-- PageFlyGlobalSection -->
+  {% render 'pagefly-main-js' %}
+  {% render 'pagefly-main-css' %}
+  {% include section.settings.section_id %}
+{% else %}
+  
+    {% if request.design_mode %}
+      <style>.pf-ph{font-size:14px!important;background:#fafafa;padding:20px;text-align:center;border:1px solid #f0f0f0;border-radius:4px;margin:15px}.pf-ph span{display:block;background:#e6f7ff;padding:8px 15px;border:1px solid #91d5ff}</style>
+      <div class="pf-ph">
+        <h3>PageFly Section</h3>
+        <span>No section selected. Please select your section from the list</span>
+      </div>
+    {% endif %}
+  
+{% endif %}
+
+{% schema %}
+{
+  "name": "PageFly Section",
+  "settings": [
+    {
+      "id": "section_id",
+      "type": "select",
+      "label": "Sections",
+      "options": [
+        {
+          "label": "Select section",
+          "value": ""
+        },
+        {
+          "label": "New Klaviyo Global",
+          "value": "pf-dd01e33a"
+        },
+        {
+          "label": "Collection Banner",
+          "value": "pf-00aea5dc"
+        },
+        {
+          "label": "[Homepage] Logo Section",
+          "value": "pf-b00280b4"
+        },
+        {
+          "label": "Footer Global",
+          "value": "pf-c52849c9"
+        },
+        {
+          "label": "2 - Fresh Trio PDP Section - 2023-11-15 2:4:38",
+          "value": "pf-7c0f91e3"
+        },
+        {
+          "label": "3 - Daily Trio PDP Section - 2023-11-15 2:4:44",
+          "value": "pf-f64dea51"
+        },
+        {
+          "label": "[Homepage] Slideshow",
+          "value": "pf-60c5de2c"
+        },
+        {
+          "label": "[Homepage] Mobile - Video Section",
+          "value": "pf-a140dc56"
+        },
+        {
+          "label": "[Homepage] Video Section",
+          "value": "pf-9058392f"
+        },
+        {
+          "label": "[Homepage] Mobile - Best Sellers Section 2023-10",
+          "value": "pf-0c183b58"
+        },
+        {
+          "label": "[Homepage] Desktop Best Sellers Section - 2023-10",
+          "value": "pf-288032b8"
+        },
+        {
+          "label": "1 - All in Set PDP Section - 2023-11-15 2:4:33",
+          "value": "pf-e99d1286"
+        },
+        {
+          "label": "1 - 1 _ _Homepage_ Slideshow _ 202 - 2023-11-15 9:",
+          "value": "pf-4f71bd78"
+        },
+        {
+          "label": "Accessories [Solo] Section",
+          "value": "pf-076acfa4"
+        },
+        {
+          "label": "Technical Specs Section [Wireless]",
+          "value": "pf-b53d12be"
+        },
+        {
+          "label": "Technical Specs Section [Wired]",
+          "value": "pf-e7ae7137"
+        },
+        {
+          "label": "1 - PDP Section New - 2023-11-15 9:50:23",
+          "value": "pf-380672ca"
+        },
+        {
+          "label": "[Homepage] Purifies Air Section",
+          "value": "pf-9040ad9f"
+        },
+        {
+          "label": "[Homepage] Mobile - Best Sellers Section (not in u",
+          "value": "pf-bed7a791"
+        },
+        {
+          "label": "[Homepage] Best Sellers Section (not in use)",
+          "value": "pf-ec4bec0c"
+        },
+        {
+          "label": "Press Review",
+          "value": "pf-93a66985"
+        },
+        {
+          "label": "HTML Video Section",
+          "value": "pf-cb7605e4"
+        },
+        {
+          "label": "[PDP] FAQ",
+          "value": "pf-1427a94e"
+        },
+        {
+          "label": "[Homepage] Cooking Fume Section",
+          "value": "pf-eaab2c6d"
+        },
+        {
+          "label": "Loved in the Kitchen",
+          "value": "pf-c375982d"
+        },
+        {
+          "label": "Accessories Section [Bundle]",
+          "value": "pf-da11889c"
+        },
+        {
+          "label": "[Homepage] Mobile - World's First Portable Section",
+          "value": "pf-caf0ccf2"
+        },
+        {
+          "label": "[Homepage] Mobile - Purifies Air Section",
+          "value": "pf-43742507"
+        },
+        {
+          "label": "[Homepage] Mobile - Reduce Section",
+          "value": "pf-03eea5aa"
+        },
+        {
+          "label": "[Homepage] World's First Portable Section",
+          "value": "pf-4953e1b9"
+        },
+        {
+          "label": "Main Stamped Widget Section",
+          "value": "pf-fd38530e"
+        },
+        {
+          "label": "Innovative Clean Air Section",
+          "value": "pf-7221c11b"
+        },
+        {
+          "label": "Main Product Section",
+          "value": "pf-9b920881"
+        },
+        {
+          "label": "Features Section",
+          "value": "pf-2d34d5a5"
+        },
+        {
+          "label": "3 column section",
+          "value": "pf-d4ffe160"
+        },
+        {
+          "label": "Anchor 1 Year Extended Warranty",
+          "value": "pf-7511a05f"
+        },
+        {
+          "label": "[Mobile] 6 Functions PDP",
+          "value": "pf-04a7d762"
+        },
+        {
+          "label": "Review for Product",
+          "value": "pf-6dfc2f8d"
+        },
+        {
+          "label": "reviews carousel mobile",
+          "value": "pf-1624fc43"
+        },
+        {
+          "label": "Stamped.io",
+          "value": "pf-1f6713a6"
+        },
+        {
+          "label": "Review (ALL)",
+          "value": "pf-406706a6"
+        },
+        {
+          "label": "Inspects Wireless",
+          "value": "pf-fbbf9598"
+        },
+        {
+          "label": "Shipping Section",
+          "value": "pf-5262057c"
+        },
+        {
+          "label": "Wired Tech Specs",
+          "value": "pf-3ee64751"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": "Find and edit your section on the [section listing](https://the-airhood.myshopify.com/admin/apps/pagefly/sections)"
+    },
+    {
+      "type": "paragraph",
+      "content": "To add block to a section, please use the App Block element on PageFly section editor."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+      "name": "PageFly Section"
+    }
+  ]
+}
+{% endschema %}

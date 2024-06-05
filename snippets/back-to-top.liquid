@@ -1,0 +1,31 @@
+<style>
+#back-to-top {
+  position: fixed;
+  bottom: 150px; 
+  left: 40px; 
+  z-index: 100; 
+}
+
+@media (max-width: 1024px) {
+  #back-to-top {
+    display: block;
+    bottom: 120px;
+    left: 25px;
+  }
+}
+</style>
+
+<a href="#" id="back-to-top" aria-label="Back to Top">
+    <img src="{{ 'back-to-top.svg' | asset_url }}" alt="Back to Top">
+</a>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var backToTopBtn = document.getElementById('back-to-top');
+
+  backToTopBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+</script>

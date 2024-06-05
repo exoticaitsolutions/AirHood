@@ -1,0 +1,125 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+
+<section class="gallery_clean_sec">
+  <h3>{{ section.settings.section_title }}</h3>
+  <div class="gallery_clean_inner">
+    <div class="gallery_clean_box gallery_box1">
+      {% for block in section.blocks %}
+      {% if block.type == 'video_image_block1' %}
+      <div class="video-image-slide" data-slide-index="{{ forloop.index0 }}">
+        {% if block.settings.video_url != blank %}
+        <div class="video-wrapper">
+          <a class="video-thumbnail" href="{{ block.settings.video_url }}">
+            <img src="{{ block.settings.image_thumbnail | img_url: 'original' }}">
+            <div class="play-icon"><img src="https://cdn.shopify.com/s/files/1/0609/3235/8403/files/Group_31.svg?v=1705638547"></div>
+          </a>
+        </div>
+        {% else %}
+        <img class="gallery_img_box video-image-src" src="{{ block.settings.image | img_url: 'original' }}" alt="img">
+        {% endif %}
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+    
+    <div class="gallery_clean_box gallery_box2">
+    {% for block in section.blocks %}
+      {% if block.type == 'video_image_block2' %}
+      <div class="video-image-slide" data-slide-index="{{ forloop.index0 }}">
+        {% if block.settings.video_url != blank %}
+        <div class="video-wrapper">
+          <a class="video-thumbnail" href="{{ block.settings.video_url }}" style="background-image: url('{{ block.settings.image_thumbnail | img_url: 'original' }}');">
+            <div class="play-icon"><img src="https://cdn.shopify.com/s/files/1/0609/3235/8403/files/Group_31.svg?v=1705638547"></div>
+          </a>
+        </div>
+        {% else %}
+        <img class="gallery_img_box video-image-src" src="{{ block.settings.image | img_url: 'original' }}" alt="img">
+        {% endif %}
+      </div>
+      {% endif %}
+      {% endfor %}
+   </div>
+    
+  </div>
+</section>
+<script>
+$(document).ready(function() {
+  $('.video-thumbnail').magnificPopup({
+    type: 'iframe'
+  });
+});
+
+
+</script>
+
+{% schema %}
+    {
+      "name": "Custom Gallery",
+      "settings": [
+        {
+          "type": "text",
+          "id": "section_title",
+          "label": "Section Title",
+          "default": "Trusted by Home Cooks"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "video_image_block1",
+          "name": "Video/Image Block Top",
+          "settings": [
+            {
+              "type": "text",
+              "id": "video_url",
+              "label": "Full Video URL"
+            },
+            {
+              "type": "image_picker",
+              "id": "image",
+              "label": "Image"
+            },
+            {
+              "type": "image_picker",
+              "id": "image_thumbnail",
+              "label": "Image Thumbnail"
+            }
+          ]
+        },
+         {
+          "type": "video_image_block2",
+          "name": "Video/Image Block Bottom",
+          "settings": [
+            {
+              "type": "text",
+              "id": "video_url",
+              "label": "Full Video URL"
+            },
+            {
+              "type": "text",
+              "id": "preview_video_url",
+              "label": "Preview Video URL"
+            },
+            {
+              "type": "image_picker",
+              "id": "image",
+              "label": "Image"
+            },
+            {
+              "type": "image_picker",
+              "id": "image_thumbnail",
+              "label": "Image Thumbnail"
+            }
+          ]
+        }
+      ],
+      "max_blocks": 12,
+      "presets": [
+        {
+          "name": "Custom Gallery",
+          "category": "Custom"
+        }
+      ]
+    }
+{% endschema %}

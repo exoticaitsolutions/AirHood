@@ -1,0 +1,727 @@
+{% comment %}
+** Footer - default view **
+- Static section
+- Uses blocks
+{% endcomment %}
+<style>
+#exit-intent-popup-container  {
+  padding: 0;
+}
+#exit-intent-popup-container .block {
+  width: 100%;
+}
+#exit-intent-popup-container .section_form {
+  text-align: center;
+}
+#exit-intent-popup-container .section_form .title {
+  margin: 0;
+  margin-bottom: 10px;
+}
+#exit-intent-popup-container .signup_section .container {
+  padding-top: 0;
+}
+#exit-intent-popup-container .signup_section .container img {
+  max-width: 200px;
+}
+#exit-intent-popup-container .signup .grid {
+	width: 100%;
+}
+#exit-intent-popup-container .signup .grid input {
+	margin-left: 0;
+}
+{% if section.settings.font_color_main != '' %}
+  #exit-intent-popup-container .block .button.fancybox-button,
+  #exit-intent-popup-container .block .title,
+  #exit-intent-popup-container .block,
+  #exit-intent-popup-container .block h3 {
+    color: {{section.settings.font_color_main}}!important;
+  }
+{% endif %}
+{% if section.settings.close_button_color != '' %}
+  #exit-intent-popup-container .block .button.fancybox-button {
+    color: {{section.settings.close_button_color}}!important;
+  }
+{% endif %}
+#exit-intent-popup-container .block .custom-logo.text-align--center {
+  margin:auto;
+}
+#exit-intent-popup-container .block .custom-logo.text-align--left {
+  margin-left: 0;
+  margin-right: auto;
+}
+#exit-intent-popup-container .block .custom-logo.text-align--right {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+/*  css for custom html block  */
+.custom-content {
+  text-align: center;
+  text-transform: uppercase;
+}
+
+  .custom-content .text_1{
+    font-family: "Cera Pro Black"!important;
+    font-size: 18px;
+  }
+  .custom-content .text_2{
+	font-family: "Cera Pro Black"!important;
+    color: #57c88c;
+    font-size: 36px;
+    margin: 10px 0 20px;
+  }
+  .custom-content .text_3,
+  .custom-content .text_5{
+    font-family: "Cera Pro Black"!important;
+    font-size: 14px;
+  }
+  .custom-content .text_4,
+  .custom-content .text_6{
+    font-family: "Cera Pro Black"!important;
+    color: #57c88c;
+    font-size: 16px;
+  }  
+  a.privacy {
+    color: #6a6a6c;
+    font-size: 14px;
+    text-decoration: underline;
+    text-transform: uppercase;
+    font-family: "Cera Pro Medium"!important;
+  }
+/* END css for custom html block  */
+  
+@media screen and (min-width: 769px) {
+  #exit-intent-popup-container .block .custom-logo.text-align--left {
+    margin-left: 30px;
+  }
+  #exit-intent-popup-container .block .custom-logo.text-align--right {
+    margin-right: 30px;
+  }
+  #exit-intent-popup-container .signup .grid.custom.flex {
+  	margin-left: 0;
+  }
+  #exit-intent-popup-container {
+   {% if section.settings.bk_image_desktop != null %}
+    background: url({{ section.settings.bk_image_desktop| img_url: 'master' }});
+   {% endif %}
+   background-position: {{section.settings.bk_image_position_desktop}};
+   background-size: {{section.settings.bk_image_size_desktop}};
+   background-repeat: no-repeat;
+   background-color: {{section.settings.bk_color_main_desktop}};
+  }
+  #exit-intent-popup-container .container.eip-wrapper {
+    padding-top: {{section.settings.section_padding_top_desktop}};
+    padding-bottom: {{section.settings.section_padding_bottom_desktop}};
+    max-width: {{section.settings.section_max_width_desktop}};
+    width: {{section.settings.section_width_desktop}};
+    margin-left: auto;
+    margin-right: auto;
+    {% if section.settings.section_alignment_desktop =='left' %}
+      margin-left: 20px;
+    {% endif %}
+    {% if section.settings.section_alignment_desktop == 'right' %}
+      margin-right: 0px;
+    {% endif %}
+  }
+  {% if section.settings.vertical_aligned_desktop %}
+    #exit-intent-popup-container .container.eip-wrapper {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      flex-direction: column;
+      -webkit-align-items: center;
+      align-items: center;
+      justify-content: center;
+      height: 100%
+    }
+  {% endif %}
+}
+
+@media screen and (max-width: 768px) {
+  #exit-intent-popup-container {
+   {% if section.settings.bk_image_mobile != null %}
+    background: url({{ section.settings.bk_image_mobile| img_url: 'master' }});
+   {% endif %}
+   background-position: {{section.settings.bk_image_position_mobile}};
+   background-size: {{section.settings.bk_image_size_mobile}};
+   background-repeat: no-repeat;
+   background-color: {{section.settings.bk_color_main_mobile}};
+  }
+  #exit-intent-popup-container .container.eip-wrapper {
+    padding-top: {{section.settings.section_padding_top_mobile}};
+    padding-bottom: {{section.settings.section_padding_bottom_mobile}};
+    max-width: {{section.settings.section_max_width_mobile}};
+    margin-left: auto;
+    margin-right: auto;
+    {% if section.settings.section_alignment_mobile =='left' %}
+      margin-left: 0;
+    {% endif %}
+    {% if section.settings.section_alignment_mobile == 'right' %}
+      margin-right: 0;
+    {% endif %}
+  }
+}
+  @media screen and (max-width: 480px) {
+    #exit-intent-popup-container {
+      background-size: {{section.settings.bk_image_size_mobile}} !important;
+      width: 100% !important;
+      height: 158vw !important;
+    }
+    .newsletter {
+      margin-top: 0 !important;
+    }
+  }
+</style>
+
+<div id='exit-intent-popup-container' class="eip" style="display:none;">
+  <div class="container eip-wrapper">
+      {% for block in section.blocks %}
+        <div id="blockid-{{block.id}}" class="block" {{ block.shopify_attributes }}>
+          {% if block.type == 'logo' %}
+            <style>
+            @media screen and (min-width: 769px) {
+              #exit-intent-popup-container .block .custom-logo {
+                max-width: {{block.settings.max_width_logo_desktop}};
+              }
+            }
+            @media screen and (max-width: 768px) {
+              #exit-intent-popup-container .block .custom-logo {
+                max-width: {{block.settings.max_width_logo_mobile}};
+              }
+            }
+            </style>
+            <div class="custom-logo text-align--{{block.settings.text_align}}">
+              {% if block.settings.image %}
+                <img  alt="{{ block.settings.image.alt | escape }}"
+                      class="footer-logo lazyload {{ settings.image_loading_style }}"
+                      data-sizes="25vw"
+                      style="max-width: {{- block.settings.image.width -}}px"
+                      data-src="{{ block.settings.image | img_url: '2048x' }}"
+                      data-srcset=" {{ block.settings.image | img_url: '200x' }} 200w,
+                                    {{ block.settings.image | img_url: '300x' }} 300w,
+                                    {{ block.settings.image | img_url: '400x' }} 400w,
+                                    {{ block.settings.image | img_url: '500x' }} 500w,
+                                    {{ block.settings.image | img_url: '600x' }} 600w,
+                                    {{ block.settings.image | img_url: '1000x' }} 1000w"
+                   />
+              {% endif %}
+            </div>
+
+          {% elsif block.type == 'signup' %}
+
+          <div id="blockid-{{block.id}}" class="signup_section">
+            {% include 'include-signup',
+              wide_display: block.settings.wide_display,
+              newsletter_title: block.settings.newsletter_title,
+              newsletter_title_color: settings.headline_footer_text_color,
+              newsletter_text: block.settings.newsletter_text,
+              btn_text: block.settings.btn_text,
+              newsletter_section_text_align: block.settings.newsletter_section_text_align,
+              privacy_text: block.settings.privacy_text,
+              collect_phone_number: block.settings.collect_phone_number,
+              image: block.settings.image,
+              custom_klaviyo_list_id: block.settings.custom_klaviyo_list_id,
+              form_id: block.settings.custom_form_id,
+              progress_bar: block.settings.progress_bar,
+              progress_bar_initDate: block.settings.progress_init_date,
+              progress_bar_percentageInt: block.settings.progress_percentage_init,
+              progress_bar_maxPercentage: block.settings.progress_max_percentage,
+              progress_bar_campaignDaysDuration: block.settings.progress_campaign_duration,
+              progress_bar_color: block.settings.progress_bar_color,
+              progress_bar_height: block.settings.progress_bar_height,
+              progress_bar_leftText: block.settings.progress_left_text,
+              progress_bar_rightText: block.settings.progress_right_text
+               %}
+          </div>
+          {% elsif block.type == 'link_list' %}
+            <div class="footer_menu">
+              {% if block.settings.menu != blank %}
+                <h6>{{ linklists[block.settings.menu].title }}<span class="right icon-down-arrow"></span></h6>
+                <div class="toggle_content">
+                  <ul>
+                    {% for link in linklists[block.settings.menu].links %}
+                      <li><p><a href="{{ link.url }}">{{ link.title }}</a></p></li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              {% else %}
+                <h6>Menu title<span class="right icon-down-arrow"></span></h6>
+                <div class="toggle_content">
+                  <ul>
+                    <li><p>{{ 'homepage.onboarding.no_content' | t }}</p></li>
+                  </ul>
+                </div>
+              {% endif %}
+            </div>
+
+          {% elsif block.type == 'text' %}
+            <div class="footer_content footer-text {% if block.settings.title == blank %}no-footer-title{% endif %}">
+              {% if block.settings.title != blank %}
+                <h6>{{ block.settings.title }}<span class="right icon-down-arrow"></span></h6>
+              {% endif %}
+              {% if block.settings.content %}
+                <div class="toggle_content">
+                  {{ block.settings.content }}
+                </div>
+              {% endif %}
+            </div>
+          {% elsif block.type == 'page' %}
+            <div class="footer_content footer-text">
+              {% if block.settings.page != blank %}
+                <h6>{{ pages[block.settings.page].title }}<span class="right icon-down-arrow"></span></h6>
+                <div class="toggle_content">
+                  {{ pages[block.settings.page].content }}
+                </div>
+              {% else %}
+                <h6>Page title<span class="right icon-down-arrow"></span></h6>
+                <div class="toggle_content">
+                  <p>{{ 'homepage.onboarding.no_content' | t }}</p>
+                </div>
+              {% endif %}
+            </div>
+
+          {% elsif block.type == 'html' %}
+            {% comment %}@TODO - Add HTML section for maps, widgets, embedding, etc{% endcomment %}
+            <div class="custom-content">
+              {{ block.settings.html_area }}
+          	</div>	
+          {% elsif block.type == 'empty' %}
+            <div class="empty-column"></div>
+
+          {% endif %}
+
+          {% assign social_media_column = section.settings.social_media_column | plus: 0  %}
+
+          {% if block.settings.social_icons_footer %}
+            {% assign social_icons = true %}
+            <div class="footer-social-icons">
+              {% include 'social-icons' %}
+            </div>
+          {% endif %}
+
+        </div>
+      {% endfor %}
+
+    </div>
+  </div>
+</div>
+<script src="{{ 'rf_eip.js' | asset_url }}" defer></script>
+
+{% schema %}
+
+{
+  "name": "Exit Intent",
+  "class": "eip-section",
+  "max_blocks": 2,
+  "settings": [
+    {
+        "type": "header",
+        "content": "Main config",
+        "info": "Check it on page: [Learn more](\/?force_show_modal_eip=testing)"
+    },
+    {
+      "type": "color",
+      "id": "font_color_main",
+      "label": "Fonts color"
+    },
+    {
+      "type": "color",
+      "id": "close_button_color",
+      "label": "Close button color"
+    },
+    {
+      "type": "color",
+      "id": "bk_color_main_desktop",
+      "label": "Background color desktop",
+      "default": "#fff"
+    },
+    {
+      "type": "image_picker",
+      "id": "bk_image_desktop",
+      "label": "Background image"
+    },
+    {
+      "type": "text",
+      "id": "bk_image_position_desktop",
+      "label": "Background image position",
+      "default" : "center"
+    },
+    {
+      "type": "checkbox",
+      "id": "vertical_aligned_desktop",
+      "label": "Vertical aligned dektop",
+      "default" : true
+    },
+    {
+      "type": "text",
+      "id": "bk_image_size_desktop",
+      "label": "Background image size",
+      "default" : "cover"
+    },
+    {
+      "type": "text",
+      "id": "section_max_width_desktop",
+      "label": "Section max width desktop",
+      "default" : "100%"
+    },
+    {
+      "type": "text",
+      "id": "section_width_desktop",
+      "label": "Section width desktop",
+      "default" : "100%"
+    },
+    {
+      "type": "text",
+      "id": "section_padding_top_desktop",
+      "label": "Section padding top desktop",
+      "default" : "20px"
+    },
+    {
+      "type": "text",
+      "id": "section_padding_bottom_desktop",
+      "label": "Section padding bottom desktop",
+      "default" : "20px"
+    },
+    {
+      "type": "select",
+      "id": "section_alignment_desktop",
+      "label": "Section alignment desktop",
+      "options": [
+         {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+     ],
+      "default": "center"
+    },
+    {
+        "type": "header",
+        "content": "Mobile config"
+    },
+    {
+      "type": "color",
+      "id": "bk_color_main_mobile",
+      "label": "Background color desktop",
+      "default": "#fff"
+    },
+    {
+      "type": "image_picker",
+      "id": "bk_image_mobile",
+      "label": "Background image mobile"
+    },
+    {
+      "type": "text",
+      "id": "bk_image_position_mobile",
+      "label": "Background image position mobile",
+      "default" : "center"
+    },
+    {
+      "type": "text",
+      "id": "bk_image_size_mobile",
+      "label": "Background image size mobile",
+      "default" : "cover"
+    },
+    {
+      "type": "text",
+      "id": "section_max_width_mobile",
+      "label": "Section max width mobile",
+      "default" : "100%"
+    },
+    {
+      "type": "text",
+      "id": "section_padding_top_mobile",
+      "label": "Section padding top mobile",
+      "default" : "20px"
+    },
+    {
+      "type": "text",
+      "id": "section_padding_bottom_mobile",
+      "label": "Section padding bottom mobile",
+      "default" : "20px"
+    },
+    {
+      "type": "select",
+      "id": "section_alignment_mobile",
+      "label": "Section alignment mobile",
+      "options": [
+         {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+     ],
+      "default": "center"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "Logo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Logo"
+        },
+        {
+          "type": "select",
+          "id": "text_align",
+          "label": "Logo alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "text",
+          "id": "max_width_logo_desktop",
+          "label": "Max width for logo on desktop",
+          "default": "100%"
+        },
+        {
+          "type": "text",
+          "id": "max_width_logo_mobile",
+          "label": "Max width for logo on mobile",
+          "default": "100%"
+        }
+      ]
+    },
+    { "type": "signup",
+      "name": "Sign-Up",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "wide_display",
+          "label": "Wide display",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "progress_bar",
+          "label": "Show progress bar",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "progress_init_date",
+          "label": "Initial date for progress bar",
+          "default": "2019-08-30"
+        },
+        {
+          "type": "text",
+          "id": "progress_percentage_init",
+          "label": "Percentage init for progress bar",
+          "default": "57"
+        },
+        {
+          "type": "text",
+          "id": "progress_max_percentage",
+          "label": "Percentage max for progress bar",
+          "default": "99"
+        },
+        {
+          "type": "text",
+          "id": "progress_campaign_duration",
+          "label": "Campaign duration in days for progress bar",
+          "default": "20"
+        },
+        {
+          "type": "color",
+          "id": "progress_bar_color",
+          "label": "Color for progress bar",
+          "default": "#007bff"
+        },
+        {
+          "type": "text",
+          "id": "progress_bar_height",
+          "label": "Height for progress bar",
+          "default": "2"
+        },
+        {
+          "type": "text",
+          "id": "progress_left_text",
+          "label": "Text on left for progress bar",
+          "default": "Limited spots left"
+        },
+        {
+          "type": "text",
+          "id": "progress_right_text",
+          "label": "Text on right for progress bar",
+          "default": "%s Reserved"
+        },
+        {
+          "type": "text",
+          "id": "custom_form_id",
+          "label": "Form id",
+          "default": "default_form_id"
+        },
+        {
+          "type": "text",
+          "id": "custom_klaviyo_list_id",
+          "label": "Klaviyo custom list id"
+        },
+        {
+          "type": "text",
+          "id": "newsletter_title",
+          "label": "Heading",
+          "default": "CROWDFUNDING SOON!"
+        },
+        {
+          "type": "html",
+          "id": "newsletter_text",
+          "label": "Subheading",
+          "default": "<p>Sign up now to access the launch-day deal of up to 35% off.</p>"
+        },
+		{
+          "type": "html",
+          "id": "privacy_text",
+          "label": "Privacy Text",
+		  "default": "<p>We respect your Privacy</p>"
+        },
+		{
+          "type": "checkbox",
+          "id": "collect_phone_number",
+          "label": "Collect Phone Number",
+		  "default": true
+        },
+        {
+          "type": "text",
+          "id": "btn_text",
+          "label": "Button Text",
+          "default": "Sign Up"
+        },
+        {
+          "type": "select",
+          "id": "newsletter_section_text_align",
+          "label": "Text alignment",
+          "options": [
+             {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+         ],
+          "default": "center"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Upload banner background image",
+          "info":"1600 x 300px recommended"
+        }
+      ]
+    },
+    {
+      "type": "link_list",
+      "name": "Menu",
+      "settings": [
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu",
+          "info": "This menu won't show drop-down items"
+        },
+        {
+          "type": "checkbox",
+          "id": "social_icons_footer",
+          "label": "Show social media footer icons",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Text",
+          "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "social_icons_footer",
+          "label": "Show social media footer icons",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "empty",
+      "name": "Empty column",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "social_icons_footer",
+          "label": "Show social media footer icons",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "html",
+      "name": "Custom Content",
+      "settings": [
+        {
+        "type": "html",
+        "id": "html_area",
+        "label": "Custom HTML",
+        "default": "<div><p>Some HTML content</p></div>"
+        }
+	  ]
+	}
+  ],
+  "default": {
+    "blocks": [
+      {
+        "type": "logo"
+      },
+      {
+        "type": "signup"
+      }
+    ]
+  }
+}
+
+{% endschema %}

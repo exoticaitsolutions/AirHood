@@ -1,0 +1,412 @@
+<style>
+.two-column-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1920px;
+  margin: 0 auto; 
+  width: 100%; 
+}
+
+.two-column-slider {
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+}
+
+.two-column-slide {
+  display: none;
+  flex-shrink: 0;
+  width: 100%;
+}
+
+.two-column-slide.active {
+  display: flex;
+  flex-direction: row-reverse;
+  transition: opacity 0.5s ease; 
+}
+
+.two-column-section .text-content {
+    width: 40%;
+    flex: 0 0 auto;
+    justify-content: space-around;
+    display: flex;
+    flex-direction: column;
+    padding: 40px;
+}
+
+.two-column-section .image-content {
+  width: 60%; 
+  flex: 0 0 auto;
+}
+
+.two-column-slider-controls button.next-slide,
+.two-column-slider-controls button.prev-slide {
+    font-size: x-large;
+    padding: 5px 15px;
+    border-radius: 100%;
+}
+
+.two-column-section .text-content h2.heading {
+    color: #DA291C;
+    font-family: 'Avenir Black',sans-serif;
+    font-size: 45px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: normal;
+    text-transform: none;
+    max-width: 530px;
+}
+
+.two-column-section .text-content h3.subheading {
+    color: #000;
+    font-family: 'Avenir Medium',sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.two-column-section .text-content p.subtext {
+    color: #141319;
+    font-family: 'Avenir Medium',sans-serif;
+    font-size: 34px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin-top: 20px;
+}
+
+.two-column-section .text-content p.paragraph {
+    color: #141319;
+    font-family: 'Nunito',sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+@media (max-width: 1920px) {
+  .two-column-section {
+    max-width: none; 
+  }
+}
+
+@media (max-width: 1280px) and (min-width: 767px) {
+    .two-column-section {
+        justify-content: center;
+    }
+
+    .two-column-slide.active {
+        display: block;
+    }
+
+    .two-column-slider {
+        width: 100%;
+    }
+
+    .two-column-section .image-content,
+    .two-column-section .text-content {
+        width: 100%; 
+    }
+}
+
+@media (max-width: 767px) {
+    .two-column-slide,
+    .two-column-slide.active {
+        display: none;
+    }
+
+    .two-column-section,
+    .mobile-heading,
+    .two-column-slider,
+    .mobile-slide-container {
+        display: block!important;
+    }
+
+    .mobile-slide {
+        min-height: 814px;
+        display: flex;
+        align-items: flex-end;
+        background-size: cover;
+    }
+
+    .mobile-slide-text {
+        margin: 30px auto;
+    }
+
+    .mobile-heading {
+        color: #141319;
+        text-align: center;
+        font-family: 'Avenir Black',sans-serif;
+        font-size: 32px;
+        font-style: normal;
+        font-weight: 900;
+        line-height: normal;
+        text-transform: none;
+    }
+
+    .mobile-subheading {
+        color: #141319;
+        text-align: center;
+        font-family: 'Avenir Roman',sans-serif;
+        font-size: 30px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        text-transform: none;
+    }
+
+    .mobile-subheading-text {
+        color: #D92E27;
+        text-align: center;
+        font-family: 'Avenir Heavy',sans-serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 800;
+        line-height: normal;
+        padding: 0 20px;
+    }
+
+    .mobile-subtext {
+        color: #141319;
+        font-family: 'Avenir Medium',sans-serif;
+        font-size: 30px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+    }
+
+    .mobile-heading-container,
+    .mobile-slide-container {
+        background-size: cover;
+        background-position: center;
+        padding-top: 30px;
+        background-color: #EEEEEE;
+    }
+
+    .mobile-bottom-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 0 20px;
+    }
+
+    .mobile-column {
+        width: 100%;
+        margin-bottom: 20px; 
+    }
+
+    .mobile-column img {
+        width: 100%;
+        height: auto; 
+    }
+
+    .mobile-column-image {
+        display: flex;
+        margin-top: 20px;
+        align-items: center;
+    }
+
+    .mobile-column-text {
+        padding: 0px 30px 30px 30px;
+    }
+
+    .mobile-column-image p.text1,
+    .mobile-column-image p.text2 {
+        color: #141319;
+        font-family: 'Nunito',sans-serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 300;
+        line-height: normal;
+    }
+
+    .mobile-column-image p.number-text {
+        color: #DA291C;
+        font-family: 'Avenir Book',sans-serif;
+        font-size: 45px;
+        font-style: normal;
+        font-weight: 350;
+        line-height: inherit;
+    }
+
+    .mobile-column-image .column1,
+    .mobile-column-image .column2 {
+        width: 50%;
+    }
+    
+    .mobile-column.bg-white {
+        border-radius: 20px;
+        background: #FFF;
+        box-shadow: 0px 2px 14px 0px rgba(0, 0, 0, 0.05);
+    }
+}
+</style>
+<div class="two-column-section">
+    <div class="mobile-heading-container">
+        <h2 class="mobile-heading" style="display: none;">{{ section.settings.mobile_heading }}</h2>
+    </div>
+    <div class="two-column-slider">
+    {% for block in section.blocks %}
+        <div class="two-column-slide {% if forloop.first %}active{% endif %}" data-slide-id="{{ forloop.index0 }}">
+            <div class="image-content">
+            <img src="{{ block.settings.image | img_url: '' }}" alt="{{ block.settings.heading }}" style="width: 100%;">
+            </div>
+            <div class="text-content">
+            <h2 class="heading">{{ block.settings.heading }}</h2>
+            <div>
+                <h3 class="subheading">{{ block.settings.subheading }}</h3>
+                <p class="subtext">{{ block.settings.subtext }}</p>
+                <p class="paragraph">{{ block.settings.paragraph }}</p>
+            </div>
+            <div class="two-column-slider-controls">
+                <button class="prev-slide">&#10094;</button>
+                <button class="next-slide">&#10095;</button>
+            </div>
+            </div>
+        </div>
+
+        <div class="mobile-slide-container" style="display: none;">
+            <div class="mobile-slide-text">
+                <h3 class="mobile-subheading">{{ block.settings.subheading }}</h3>
+                <p class="mobile-subheading-text">{{ block.settings.subheading_text }}</p>
+            </div>
+            <div class="mobile-slide" style="background-image: url('{{ block.settings.mobile_image | img_url: '' }}');">
+                <div class="mobile-bottom-box">
+                    <div class="mobile-column bg-white">
+                        <div class="mobile-column-image">
+                            <div class="column1">
+                                <img src="{{ block.settings.text_image | img_url: '' }}" alt="{{ block.settings.subheading }}" style="width: 100%;">
+                            </div>
+                            <div class="column2">
+                                <p class="text1">{{ block.settings.text1 }}</p>
+                                <p class="number-text">{{ block.settings.number_text }}</p>
+                                <p class="text2">{{ block.settings.text2 }}</p>
+                            </div>
+                        </div>
+                        <div class="mobile-column-text">
+                            <p class="mobile-subtext">{{ block.settings.subtext }}</p>
+                            <p class="mobile-paragraph">{{ block.settings.paragraph }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+  </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var sliderContainer = document.querySelector('.two-column-slider');
+  var slides = document.querySelectorAll('.two-column-slide');
+
+  function changeSlide(newActiveIndex) {
+    slides.forEach(function(slide) {
+      slide.classList.remove('active');
+    });
+    slides[newActiveIndex].classList.add('active');
+  }
+
+  sliderContainer.addEventListener('click', function(event) {
+    var activeIndex = Array.from(slides).findIndex(slide => slide.classList.contains('active'));
+    if (event.target.matches('.prev-slide')) {
+      var newActiveIndex = (activeIndex - 1 + slides.length) % slides.length;
+      changeSlide(newActiveIndex);
+    } else if (event.target.matches('.next-slide')) {
+      var newActiveIndex = (activeIndex + 1) % slides.length;
+      changeSlide(newActiveIndex);
+    }
+  });
+});
+</script>
+{%  schema  %}  
+{
+  "name": "Custom Slider",
+  "settings": [
+    {
+      "type": "text",
+      "id": "mobile_heading",
+      "label": "Heading Mobile Title",
+      "default": "Cleaner Kitchen Air While Cooking"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Custom Slide",
+      "settings": [
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Slide Image"
+        },
+        {
+            "type": "image_picker",
+            "id": "mobile_image",
+            "label": "Mobile Background Image"
+        },
+        {
+            "type": "image_picker",
+            "id": "text_image",
+            "label": "Mobile Box Image"
+        },
+        {
+            "type": "text",
+            "id": "heading",
+            "label": "Heading",
+            "default": "Your Heading Here"
+        },
+        {
+            "type": "text",
+            "id": "subheading",
+            "label": "Subheading",
+            "default": "Your Subheading Here"
+        },
+        {
+            "type": "text",
+            "id": "text1",
+            "label": "Mobile Text Box 1",
+            "default": "High-grade"
+        },
+        {
+            "type": "text",
+            "id": "number_text",
+            "label": "Mobile Text Box 2",
+            "default": "3 layer"
+        },
+        {
+            "type": "text",
+            "id": "text2",
+            "label": "Mobile Text Box 3",
+            "default": "stainless steel"
+        },
+        {
+            "type": "text",
+            "id": "subheading_text",
+            "label": "Mobile Subheading Text",
+            "default": "Subheading Text Here"
+        },
+        {
+            "type": "text",
+            "id": "subtext",
+            "label": "Subtext",
+            "default": "Your Subtext Here"
+        },
+        {
+            "type": "textarea",
+            "id": "paragraph",
+            "label": "Paragraph",
+            "default": "Your Paragraph Here"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Two-Column Slider"
+    }
+  ]
+}
+{% endschema %}

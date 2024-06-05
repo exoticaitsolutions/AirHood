@@ -1,0 +1,196 @@
+<script defer src="{{ 'masonry.pkgd.min.js' | asset_url }}"></script>
+<script defer src="{{ 'lity.min.js' | asset_url }}"></script>
+<link rel="stylesheet" src="{{ 'lity.min.css' | asset_url }}">
+
+
+<style>
+.masonry-gallery-container {
+  margin: 0 auto;
+}
+
+.grid-sizer,
+.masonry-gallery-item {
+  width: 20%;
+}
+
+@media (max-width: 1024px) {
+  .grid-sizer,
+  .masonry-gallery-item {
+    width: 25%; 
+  }
+}
+
+@media (max-width: 768px) {
+  .masonry-gallery-slider {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+
+  .masonry-gallery-slide {
+    width: calc(50% - 4px);
+    margin-bottom: 8px;
+  }
+
+  .slider-dots-container {
+    text-align: center;
+    padding: 10px 0;
+  }
+
+  .slider-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #ccc;
+    margin: 0 5px;
+    cursor: pointer;
+  }
+
+  .slider-dot.active {
+    background-color: #333;
+  }
+}
+
+</style>
+<div class="masonry-gallery-section">
+  <h2 class="masonry-gallery-title">{{ section.settings.section_title }}</h2>
+
+  <div class="masonry-gallery-container desktop-only">
+    <div class="grid-sizer">
+    {% for block in section.blocks %}
+      <div class="masonry-gallery-item">
+        {% if block.settings.video_url != blank %}
+          <a href="{{ block.settings.video_url }}" data-lity>
+            <img src="{{ block.settings.image_desktop | img_url: 'master' }}" alt="{{ block.settings.image_alt_text }}">
+          </a>
+        {% else %}
+          <img src="{{ block.settings.image_desktop | img_url: 'master' }}" alt="{{ block.settings.image_alt_text }}">
+        {% endif %}
+      </div>
+    {% endfor %}
+    </div>
+  </div>
+
+  <div class="masonry-gallery-slider mobile-only" id="masonryGallerySlider">
+    {% for block in section.blocks %}
+      <div class="masonry-gallery-slide">
+        {% if block.settings.video_url != blank %}
+          <a href="{{ block.settings.video_url }}" data-lity>
+            <img src="{{ block.settings.image_mobile | img_url: 'master' }}" alt="{{ block.settings.image_alt_text }}">
+          </a>
+        {% else %}
+          <img src="{{ block.settings.image_mobile | img_url: 'master' }}" alt="{{ block.settings.image_alt_text }}">
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="slider-dots-container mobile-only"></div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var masonryGalleryContainer = document.querySelector('.masonry-gallery-container');
+    if (masonryGalleryContainer) {
+        new Masonry(masonryGalleryContainer, {
+            itemSelector: '.masonry-gallery-item',
+            columnWidth: '.grid-sizer',
+            percentPosition: true
+        });
+    }
+
+    const slider = document.getElementById('masonryGallerySlider');
+    const slides = slider.querySelectorAll('.masonry-gallery-slide');
+    const dotsContainer = document.querySelector('.slider-dots-container');
+    let currentIndex = 0;
+    let slidesPerPage = calculateSlidesPerPage();
+    
+    setupDots();
+    updateSlideVisibility();
+    
+    function calculateSlidesPerPage() {
+        return window.innerWidth < 768 ? 2 : 4;
+    }
+    
+    function setupDots() {
+        const dotsCount = Math.ceil(slides.length / slidesPerPage);
+        for (let i = 0; i < dotsCount; i++) {
+        const dot = document.createElement('div');
+        dot.classList.add('slider-dot');
+        if (i === 0) dot.classList.add('active');
+        dot.addEventListener('click', () => changeSlide(i * slidesPerPage));
+        dotsContainer.appendChild(dot);
+        }
+    }
+    
+    function updateSlideVisibility() {
+        const startIndex = currentIndex * slidesPerPage;
+        slides.forEach((slide, index) => {
+        slide.style.display = (index >= startIndex && index < startIndex + slidesPerPage) ? 'block' : 'none';
+        });
+        updateDots();
+    }
+    
+    function changeSlide(newIndex) {
+        currentIndex = newIndex;
+        updateSlideVisibility();
+    }
+    
+    function updateDots() {
+        const allDots = dotsContainer.querySelectorAll('.slider-dot');
+        allDots.forEach(dot => dot.classList.remove('active'));
+        allDots[Math.floor(currentIndex / slidesPerPage)].classList.add('active');
+    }
+});
+</script>
+
+{% schema %}
+{
+    "name": "Masonry Gallery",
+    "settings": [
+    {
+        "type": "text",
+        "id": "section_title",
+        "label": "Section Title",
+        "default": "Masonry Gallery"
+    }
+    ],
+    "blocks": [
+    {
+        "type": "image",
+        "name": "Gallery Item",
+        "settings": [
+        {
+            "type": "image_picker",
+            "id": "image_desktop",
+            "label": "Desktop Image"
+        },
+        {
+            "type": "image_picker",
+            "id": "image_mobile",
+            "label": "Mobile Image"
+        },
+        {
+            "type": "url",
+            "id": "video_url",
+            "label": "Video URL"
+        },
+        {
+            "type": "text",
+            "id": "image_alt_text",
+            "label": "Image Alt Text"
+        }
+        ]
+    }
+    ],
+    "max_blocks": 20,
+    "presets": [
+    {
+        "name": "New Masonry Gallery"
+    }
+    ]
+}
+{% endschema %}
+    

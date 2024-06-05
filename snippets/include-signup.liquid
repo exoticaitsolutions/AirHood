@@ -1,0 +1,238 @@
+{% if type != 'block' %}
+  {% assign wide_display = section.settings.wide_display %}
+  {% assign newsletter_title = section.settings.newsletter_title %}
+  {% assign newsletter_text = section.settings.newsletter_text %}
+  {% assign privacy_text = section.settings.privacy_text %}
+  {% assign newsletter_section_text_align = section.settings.newsletter_section_text_align %}
+  {% assign collect_phone_number = settings.collect_phone_number_signup %}
+  {% assign image = section.settings.image %}
+  {% assign custom_klaviyo_list_id = section.settings.custom_klaviyo_list_id %}
+  {% assign form_id = section.settings.custom_form_id %}
+
+  {% assign newsletter_title_color = section.settings.newsletter_title_color %}
+
+  {% assign progress_bar = section.settings.progress_bar %}
+  {% assign progress_bar_initDate = section.settings.progress_init_date %}
+  {% assign progress_bar_percentageInt = section.settings.progress_percentage_init %}
+  {% assign progress_bar_maxPercentage = section.settings.progress_max_percentage %}
+  {% assign progress_bar_campaignDaysDuration = section.settings.progress_campaign_duration %}
+  {% assign progress_bar_color = section.settings.progress_bar_color %}
+  {% assign progress_bar_height = section.settings.progress_bar_height %}
+  {% assign progress_bar_leftText = section.settings.progress_left_text %}
+  {% assign progress_bar_rightText = section.settings.progress_right_text %}
+
+{% else %}
+  {% assign wide_display = block.settings.wide_display %}
+  {% assign newsletter_title = block.settings.newsletter_title %}
+  {% assign newsletter_text = block.settings.newsletter_text %}
+  {% assign privacy_text = block.settings.privacy_text %}
+  {% assign btn_text = block.settings.btn_text %}
+  {% assign collect_phone_number = block.settings.collect_phone_number %}
+  {% assign newsletter_section_text_align = block.settings.newsletter_section_text_align %}
+  {% assign image = block.settings.image %}
+  {% assign custom_klaviyo_list_id = block.settings.custom_klaviyo_list_id %}
+  {% assign form_id = block.settings.custom_form_id %}
+
+  {% assign newsletter_title_color = block.settings.newsletter_title_color %}
+
+  {% assign progress_bar = block.settings.progress_bar %}
+  {% assign progress_bar_initDate = block.settings.progress_init_date %}
+  {% assign progress_bar_percentageInt = block.settings.progress_percentage_init %}
+  {% assign progress_bar_maxPercentage = block.settings.progress_max_percentage %}
+  {% assign progress_bar_campaignDaysDuration = block.settings.progress_campaign_duration %}
+  {% assign progress_bar_color = block.settings.progress_bar_color %}
+  {% assign progress_bar_height = block.settings.progress_bar_height %}
+  {% assign progress_bar_leftText = block.settings.progress_left_text %}
+  {% assign progress_bar_rightText = block.settings.progress_right_text %}
+
+{% endif %}
+
+{% if section.settings.image_bk_desktop != blank %}
+  <style>
+  @media screen and (min-width: {{ section.settings.media_query_break }}px) {
+    #shopify-section-{{ section.id }}.Sign-Up-section {
+      background: url({{ section.settings.image_bk_desktop| img_url: 'master' }});
+      background-position: {{ section.settings.image_bk_desktop_position }};
+      background-repeat: no-repeat;
+      background-size: {{ section.settings.image_bk_desktop_size }};
+    }
+  }
+  </style>
+{% endif %}
+
+{% if section.settings.image_bk_mobile != blank %}
+  <style>
+  @media screen and (max-width: {{ section.settings.media_query_break | minus: 1 }}px) {
+    #shopify-section-{{ section.id }}.Sign-Up-section {
+      background: url({{ section.settings.image_bk_mobile | img_url: 'master' }});
+    }
+  }
+  </style>
+{% endif %}
+
+<style>
+.single-mailchimp-form .input-row.smc-messages .alert {
+  display: none;
+}
+#shopify-section-{{ section.id }}.Sign-Up-section {
+  background-color: {{section.settings.bk_color}};
+}
+#shopify-section-{{ section.id }} .signup .input-row input.sign_up {
+  min-width: 150px;
+  margin-left: 0;
+}
+#shopify-section-{{ section.id }} .signup .grid {
+  display: grid;
+}
+
+  .section_form {
+  	text-align: center;
+  }
+#shopify-section-{{ section.id }} .signup .grid p {
+  font-size: 0.8em;
+  padding-top: 5px;
+}
+#shopify-section-{{ section.id }} .signup .grid .input-row input.sign_up {
+  margin-left: 0;
+}
+@media screen and (min-width: {{ section.settings.media_query_break }}px) {
+  #shopify-section-{{ section.id }} .signup .grid {
+    margin-left: 15px;
+  }
+}
+#shopify-section-{{ section.id }} .signup .progressbar-text {
+  font-weight: 600;
+}
+#shopify-section-{{ section.id }} .signup .newsletter-text strong {
+  color: #b56853;
+}
+#shopify-section-{{ section.id }} .signup h2,
+#shopify-section-{{ section.id }} .signup h3,
+#shopify-section-{{ section.id }} .signup h4,
+#shopify-section-{{ section.id }} .signup .title {
+  color: {{ newsletter_title_color }};
+  text-transform: capitalize;
+  margin-bottom: 25px;
+  font-weight: 500;
+}
+#shopify-section-{{ section.id }} .signup .title,
+#shopify-section-{{ section.id }} .signup form {
+  max-width: {{section.settings.form_max_width}};
+  margin: auto;
+  margin-top: 15px;
+}
+/* #additional phone input
+================================================== */
+@media only screen and ( max-width: 425px ) {
+  form.form-container .phone-input-group.desktop-view {
+    display: none!important;
+  }
+}
+@media only screen and ( min-width: 426px ) {
+  form.form-container .phone-input-group.mobile-view {
+    display: none!important;
+  }
+}
+form.form-container .phone-input-group {
+  display: none;
+}
+.phone-input-notice {
+  font-size: 0.6em;
+  line-height: 1.4em;
+}
+</style>
+
+{% if custom_klaviyo_list_id != '' %}
+  {% assign klaviyo_list_id = custom_klaviyo_list_id %}
+{% else %}
+  {% assign klaviyo_list_id = settings.main_klaviyo_list_id %}
+{% endif %}
+
+{% if form_id == '' %}
+  {% assign form_id = "footer_email_capture" %}
+{% endif %}
+
+{% if wide_display == false %}
+  <div class="container">
+    <div class="sixteen columns">
+{% endif %}
+      <div class="signup
+                  {% if image != nil %}newsletter-bgr-true{% endif %}
+                  text-align--{{newsletter_section_text_align}}
+                  lazyload
+                  {{ settings.image_loading_style }}"
+            {% if image != nil %}
+              data-bgset="  {{ image | img_url: '2048x' }} 2048w,
+                            {{ image | img_url: '1600x' }} 1600w,
+                            {{ image | img_url: '1200x' }} 1200w,
+                            {{ image | img_url: '1000x' }} 1000w,
+                            {{ image | img_url: '800x' }} 800w,
+                            {{ image | img_url: '600x' }} 600w,
+                            {{ image | img_url: '400x' }} 400w"
+              data-sizes="100vw"
+            {% endif %}>
+        <div>
+          <div class="{% if newsletter_section_text_align == "right" %} offset-by-six ten columns {% elsif newsletter_section_text_align == "left" %} sixteen columns {% endif %} section_form">
+            {% if newsletter_title != blank %}
+              <h3>{{ newsletter_title }}</h3>
+            {% endif %}
+            {% if newsletter_text != blank %}
+              <div class="newsletter-text">{{ newsletter_text | replace: '[percentageoff]', settings.percentage_off_discount }}</div>
+            {% endif %}
+            {% if progress_bar == true %}
+              <div class="progress-bar-wrapper">
+                <div class="boostrap-progress-bar" data-bar='{
+                "initDate" : "{{progress_bar_initDate}}",
+                "percentageInt" : {{progress_bar_percentageInt}},
+                "maxPercentage" : {{progress_bar_maxPercentage}},
+                "campaignDaysDuration" : {{progress_bar_campaignDaysDuration}},
+                "color" : "{{progress_bar_color}}",
+                "height" : {{progress_bar_height}},
+                "leftText" : "{{progress_bar_leftText}}",
+                "rightText" : "{{progress_bar_rightText}}"}'></div>
+              </div>
+            {% endif %}
+          <div class="newsletter">
+            <span class="message"></span>
+            {% if settings.mail_service == "mailchimp" %}
+              <form autocomplete="off" id="{{form_id}}" class="single-mailchimp-form form-container" action="{{ settings.mailchimp_link_for_signup }}" method="post" name="mc-embedded-subscribe-form" id="contact_form" target="_self">
+                <div class="input-row">
+                  <input type="hidden" name="redirect_to" value="/pages/{{settings.redirect_after_signup_page}}">
+                  <input autocomplete="off" type="email" value="" name="EMAIL" class="as_button contact_email" placeholder="{{ 'general.newsletter_form.placeholder' | t }}" required="required">
+                  {% if collect_phone_number %}
+                    <div class="phone-input-group mobile-view">
+                      <input autocomplete="off" type="tel" name="phone_input" placeholder="(Optional) Phone number" class="form-control phone-input" pattern="^\+?(?:[0-9] ?){6,14}[0-9]$" title="Phone Number (Format: +9 999999999)">
+                      <div class=" phone-input-notice">Optional: Add your mobile number to receive news and announcements via text message. Message and data rates may apply. 4 messages max/month. Text HELP for Help or STOP to end messages. <a href="/pages/privacy-policy">Terms & Conditions</a>. View our <a href="/pages/privacy-policy">Privacy Policy</a>.
+                      </div>
+                    </div>
+                  {% endif %}
+                  <span class="grid flex custom">
+                    <input type="submit" class="action_button sign_up btn" value="{% if btn_text %}{{btn_text}}{% else %}{{ 'general.newsletter_form.submit' | t }}{% endif %}"/>
+                    {{privacy_text}}
+                  </span>
+                </div>
+                {% if collect_phone_number %}
+                  <div class="input-row phone-input-group desktop-view">
+                    <input autocomplete="off" type="tel" name="phone_input" placeholder="(Optional) Phone number" class="form-control phone-input" pattern="^\+?(?:[0-9] ?){6,14}[0-9]$" title="Phone Number (Format: +9 999999999)">
+                    <div class=" phone-input-notice">Optional: Add your mobile number to receive news and announcements via text message. Message and data rates may apply. 4 messages max/month. Text HELP for Help or STOP to end messages. <a href="/pages/privacy-policy">Terms & Conditions</a>. View our <a href="/pages/privacy-policy">Privacy Policy</a>.
+                    </div>
+                  </div>
+                {% endif %}
+                <div class="input-row smc-messages">
+                  <div class="alert alert-success" role="alert"><i class="fa fa-check" aria-hidden="true"></i>{{settings.redirect_after_signup_message}}</div>
+                  <div class="alert alert-subscribed" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>{{settings.redirect_after_signup_message_subscribed}}</div>
+                  <div class="alert alert-error" role="alert"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>{{settings.generic_error_message}}</div>
+                  <div class="alert alert-invalid" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{settings.generic_invalid_message}}</div>
+                </div>
+              </form>
+            {% else %}
+				<!--<div id="{{form_id}}" class="klaviyo-form-{{settings.klaviyo_embed_form_id}} klaviyo-embed-form-wrapper Testing2"></div>-->
+            {% endif %}
+           </div>
+          </div>
+        </div>
+      </div>
+{% if wide_display == false %}
+  </div>
+</div>
+{% endif %}

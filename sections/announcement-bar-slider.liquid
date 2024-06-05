@@ -1,0 +1,132 @@
+<link rel="stylesheet" href="{{ 'slick.css' | asset_url }}" />
+<script src="{{ 'slick.min.js' | asset_url }}" defer></script>
+
+{% if template.name == "index" or template.name == "collection" %}
+  {%- assign has_announcement = false -%}
+  {% for block in section.blocks %}
+    {% if block.settings.message != blank or block.settings.link != blank %}
+      {%- assign has_announcement = true -%}
+    {% endif %}
+  {% endfor %}
+
+  {% if has_announcement %}
+    <div class="announcement-slider not-initialized">
+      {% for block in section.blocks %}
+        {% if block.settings.message != blank or block.settings.link != blank %}
+          <div class="announcement-bar" style="background-color: {{ block.settings.background_color }}; color: {{ block.settings.font_color }}; display: flex; align-items: center; justify-content: center;">
+            <span>{{ block.settings.message }}</span>
+            <a href="{{ block.settings.link }}" style="color: {{ block.settings.link_text_color }}; background-color: {{ block.settings.button_color }}; text-decoration: underline;">{{ block.settings.link_title }}</a>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <script>
+      $(document).ready(function() {
+        var targetNode = document.body;
+        var config = {
+          childList: true,
+          subtree: true
+        };
+
+        var assignSlideClasses = function(event, slick) {
+          $('.announcement-slider .slick-slide').each(function(slideIndex) {
+            $(this).find('.announcement-bar').addClass('rcl-slide-' + (
+              slideIndex + 1
+            ));
+          });
+        };
+
+
+        var initializeSlider = function() {
+          $('.announcement-slider.not-initialized').on('init', function(event, slick) {
+            $(this).removeClass('not-initialized').addClass('initialized');
+            assignSlideClasses(event, slick);
+          }).slick({
+            autoplay: true,
+            dots: false,
+            arrows: false,
+            infinite: true,
+            speed: 300,
+            slidesToShow: 1
+          });
+        };
+
+        var callback = function(mutationsList, observer) {
+          for (var mutation of mutationsList) {
+            if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+              for (var node of mutation.addedNodes) {
+                if ($(node).find('.announcement-slider.not-initialized').length > 0) {
+                  initializeSlider();
+                  observer.disconnect();
+                }
+              }
+            }
+          }
+        };
+
+        var observer = new MutationObserver(callback);
+        observer.observe(targetNode, config);
+
+        if ($('.announcement-slider.not-initialized').length > 0) {
+          initializeSlider();
+          observer.disconnect();
+        }
+      });
+    </script>
+  {% endif %}
+
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Announcement Bars",
+    "settings": [],
+    "blocks": [
+      {
+        "type": "announcement_bar",
+        "name": "Announcement Bar",
+        "settings": [
+          {
+            "type": "text",
+            "id": "message",
+            "label": "Message",
+            "default": "Your announcement here!"
+          },
+          {
+            "type": "text",
+            "id": "link",
+            "label": "Link"
+          },
+          {
+            "type": "text",
+            "id": "link_title",
+            "label": "Link Title",
+            "default": "Learn More"
+          },
+          {
+            "type": "color",
+            "id": "background_color",
+            "label": "Background Color",
+            "default": "#000000"
+          }, {
+            "type": "color",
+            "id": "font_color",
+            "label": "Font Color",
+            "default": "#FFFFFF"
+          }, {
+            "type": "color",
+            "id": "button_color",
+            "label": "Button Color",
+            "default": "transparent"
+          }, {
+            "type": "color",
+            "id": "link_text_color",
+            "label": "Link Text Color",
+            "default": "#FFFFFF"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,60 @@
+{%- assign color_map = 'Cadmium Orange:#f04222,Ivory White:#ececec,Space Black:#28282c,Mint Green:#B9DCD3' | split: ',' -%}
+{%- assign colors_shown = '' -%}
+
+{%- if product.available -%}
+  {%- for option in product.options_with_values -%}
+    {%- if option.name contains 'Color' or option.name contains 'Colour' -%}
+      <div class="product_swatches">
+        {% for value in option.values %}
+          {% unless colors_shown contains value %}
+            {% assign colors_shown = colors_shown | append: value | append: ',' %}
+            {% assign color_code = '' %}
+            {% for entry in color_map %}
+              {% assign parts = entry | split: ':' %}
+              {% if parts[0] == value %}
+                {% assign color_code = parts[1] %}
+              {% endif %}
+            {% endfor %}
+            
+            <div
+              class="swatch" 
+              role="button" 
+              tabindex="0" 
+              aria-label="Select {{ value }} color"
+              data-variant-id="{{ product.variants[forloop.index0].id }}"
+              data-variant-image="{{ product.variants[forloop.index0].featured_image | img_url: 'master' }}"
+              data-variant-price="{{ product.variants[forloop.index0].price | money_without_currency }}"
+              style="background-color: {{ color_code }};">
+              <span></span>
+            </div>
+          {% endunless %}
+        {% endfor %}
+      </div>
+      {% break %}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var swatches = document.querySelectorAll('.product_swatches .swatch');
+  swatches.forEach(function(swatch) {
+    swatch.addEventListener('click', function() {
+      var variantId = this.dataset.variantId;
+      var newImageSrc = this.dataset.variantImage;
+      var newPrice = this.dataset.variantPrice;
+      var productContainer = this.closest('.best-seller-product');
+      
+      var productImage = productContainer.querySelector('.product-image');
+      var productPrice = productContainer.querySelector('.product-price');
+
+      if (newImageSrc) {
+        productImage.src = newImageSrc;
+      }
+
+      if (newPrice) {
+        productPrice.innerHTML = Shopify.formatMoney(newPrice, window.money_format);
+      }
+    });
+  });
+});  
+</script>

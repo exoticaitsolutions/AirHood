@@ -1,0 +1,37 @@
+{% assign policy_name = handle | replace: '-', '_' %}
+{% assign policy = shop[policy_name] %}
+<section class="section">
+  <a name="pagecontent" id="pagecontent"></a>
+  <div class="container content page">
+    <div class="one-whole column">
+      <h1>
+      {%- liquid
+        if page
+          echo page.title | escape
+        elsif policy
+          echo policy.title | escape
+        else
+          echo 'No title'
+        endif
+        -%}
+  </h1>
+      <div class="feature_divider"></div>
+    </div>
+    {%- liquid
+      if page
+        assign tempContent = page.content
+      elsif policy
+       assign tempContent = policy.body
+      endif
+      -%}
+    {% render 'page-multi-column', content: tempContent %}
+  </div>
+</section>
+{% if request.path contains '/policies/' %}
+  {% assign snippet_name = 'pf-dd01e33a' %}
+  {% render 'pagefly-settings' %}
+  {% include snippet_name %}
+  {% assign snippet_name = 'pf-c52849c9' %}
+  {% render 'pagefly-settings' %}
+  {% include snippet_name %}
+{% endif %}

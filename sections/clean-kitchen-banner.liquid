@@ -1,0 +1,43 @@
+      <section class="clean_banner_sec py_8">
+                <div class="clean_banner_sec_inner">
+                            <div class="clean_banner_img">
+                               <img src="{{ section.settings.image | img_url: "master" }}" alt="img"> 
+                            </div>
+                          <div class="clean_banner_content">
+                          <div class="img2">
+                           <img src="{{ section.settings.image2 | img_url: "master" }}" alt="img">
+                          </div>
+                          {{ section.settings.description }}
+                        </div>
+                </div>
+            </section>
+
+{% schema %}
+  {
+    "name": "Banner Section",
+    "settings": [
+      {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Banner Image"
+    },
+       {
+      "type": "image_picker",
+      "id": "image2",
+      "label": "Image"
+    },
+      {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    }
+    ],
+    
+    "presets": [
+      {
+        "name": "Banner Section"
+      }
+    ]
+    
+  }
+{% endschema %}

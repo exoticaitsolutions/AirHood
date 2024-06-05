@@ -1,0 +1,41 @@
+<style>
+  form.needsclick.klaviyo-form .needsclick .go3176171171 p {
+      margin: auto;
+  }
+</style>
+
+<div class="custom_newsletter" id="signup" style="background-image:url('{{ section.settings.image | img_url:"master" }}');">
+  <div class="custom_newsletter_inner">
+    {{ section.settings.description }}
+    <div class="for-desktop">
+<div class="klaviyo-form-XBsCiQ"></div>
+    </div>
+    <div class="for-mobile">
+    <div class="klaviyo-form-WBU456"></div>
+      </div>
+</div>
+</div>
+{% schema %}
+  {
+    "name": "Custom Newsletter",
+    "settings": [
+       {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background Image"
+    },
+     {
+      "type": "richtext",
+      "id": "description",
+      "label": "Heading"
+    }
+    ],
+    
+    "presets": [
+      {
+        "name": "Custom Newsletter"
+      }
+    ]
+    
+  }
+{% endschema %}
